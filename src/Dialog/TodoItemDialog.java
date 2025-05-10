@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import Interface.TodoItemTask;
 import Steuerung.Steuerung;
+import TodoItem.Task;
 
 public class TodoItemDialog extends JDialog{
 
@@ -174,7 +175,7 @@ public class TodoItemDialog extends JDialog{
                 System.out.println("Notizen");
     
             }else if(taskAuswahl.equals("Task")) {
-                System.out.println("Task");
+                //new Task(taskAuswahl, taskAuswahl, todoItemClass, steuerung, null)
     
             }else if(taskAuswahl.equals("Ordner")) {
                 new OrdnerDialog(steuerung, appFrame, todoItemClass);

@@ -1,4 +1,5 @@
 package TodoItem;
+import java.awt.event.MouseListener;
 import java.time.LocalDateTime;
 
 import javax.swing.JPanel;
@@ -65,4 +66,5 @@ public abstract class TodoItem {
     }
 
     public abstract JPanel display();
+    protected abstract MouseListener mouseClicked();
 }
