@@ -26,6 +26,7 @@ public class MenuBar extends JMenuBar{
         openButton.setEnabled(true);
 
         menuItem.add(savingButton);
+        menuItem.add(openButton);
         return menuItem;
     }
 }

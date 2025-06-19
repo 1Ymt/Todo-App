@@ -3,6 +3,7 @@ package Steuerung;
 import java.awt.*;
 import java.awt.MenuBar;
 import java.awt.event.*;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -28,6 +29,11 @@ public class Steuerung {
         this.folderManager = new FolderManager(this, mainMenu);
 
         appFrame.addMainPanel(folderManager);
+
+        File file = new File("Saved");
+        if(file.isFile()) {
+            openSaveFile();
+        }
     }
 
     /*
@@ -141,32 +147,26 @@ public class Steuerung {
 
     public void openSaveFile() {    //Naming
         Gson gson = new Gson();
-        try (FileReader reader = new FileReader("Save")){
+        try (FileReader reader = new FileReader("Saved")){
             TodoData data = gson.fromJson(reader, TodoData.class);
-            System.out.println("Successfuly Opened");
-            deserialize(data);
+            deserialize(data, mainMenu);
         } catch (Exception e) {
             e.printStackTrace();
             return;
         }
     }
-    /*
-     * Another Function so that i can create the Task like a tree
-     * Example Code:
-     *  public TodoItemTask buildTreeFromData(TodoData rootData) {
-            TodoItemPanel panel = new TodoItemPanel(rootData);
-            
-            for (TodoData childData : rootData.getTodoData()) {
-                TodoItemTask childTask = buildTreeFromData(childData);
-                panel.getPanel().add(childTask.getPanel()); // or however you structure nested panels
-            }
-            return panel;
-        }
-     */
-    private void deserialize(TodoData data) {
+
+    private void deserialize(TodoData data, TodoItemTask parent) {
         for (TodoData todoData : data.getTodoData()) {
             if(todoData.getType().equals("Ordner")) {
-                Ordner ordner = new Ordner(this, mainMenu, appFrame, null, null);
+
+            Ordner ordner = new Ordner(this, parent, appFrame, todoData.getName(), new Color(todoData.getColorRGB()));
+            parent.addTodoItem(ordner);
+            deserialize(todoData, ordner);
+            }else if(todoData.getType().equals("Task")) {
+
+            }else if(todoData.getType().equals("Notizen")) {
+
             }
         }
     }

@@ -46,6 +46,7 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
         return data;
     }
 
+
     @Override
     public TodoItem[] getTodoItems() {
         return todoItems.toArray(new TodoItem[0]);
