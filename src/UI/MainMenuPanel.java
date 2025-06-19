@@ -2,6 +2,7 @@ package UI;
 
 import javax.swing.*;
 
+import Data.TodoData;
 import Interface.TodoItemTask;
 
 import java.awt.*;
@@ -31,6 +32,18 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
         this.add(createTopMenuPanel(), BorderLayout.NORTH);
         this.add(createSidePanel(), BorderLayout.WEST);
         this.add(createSidePanel(), BorderLayout.EAST);
+    }
+
+    public TodoData toData() {
+        TodoData data = new TodoData();
+
+        data.setType("MainMenu");
+        data.setName("Main Menu");
+
+        for (TodoItem todoItem : todoItems) {
+            data.setTodoData(todoItem.toData());
+        }
+        return data;
     }
 
     @Override

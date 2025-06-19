@@ -1,9 +1,17 @@
 package Steuerung;
 
 import java.awt.*;
+import java.awt.MenuBar;
 import java.awt.event.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import javax.swing.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import Data.TodoData;
 import Dialog.*;
 import Interface.TodoItemTask;
 import TodoItem.*;
@@ -119,5 +127,47 @@ public class Steuerung {
         }else 
         System.out.println("Fehler");
         return null;
+    }
+
+    public void serialize() {
+        try (FileWriter writer = new FileWriter("Saved")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+            gson.toJson(mainMenu.toData(), writer);
+            System.out.println("Successfully Saved");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openSaveFile() {    //Naming
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader("Save")){
+            TodoData data = gson.fromJson(reader, TodoData.class);
+            System.out.println("Successfuly Opened");
+            deserialize(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+    /*
+     * Another Function so that i can create the Task like a tree
+     * Example Code:
+     *  public TodoItemTask buildTreeFromData(TodoData rootData) {
+            TodoItemPanel panel = new TodoItemPanel(rootData);
+            
+            for (TodoData childData : rootData.getTodoData()) {
+                TodoItemTask childTask = buildTreeFromData(childData);
+                panel.getPanel().add(childTask.getPanel()); // or however you structure nested panels
+            }
+            return panel;
+        }
+     */
+    private void deserialize(TodoData data) {
+        for (TodoData todoData : data.getTodoData()) {
+            if(todoData.getType().equals("Ordner")) {
+                Ordner ordner = new Ordner(this, mainMenu, appFrame, null, null);
+            }
+        }
     }
 }

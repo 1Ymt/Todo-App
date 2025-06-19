@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Data.TodoData;
 import Interface.TodoItemTask;
 import Steuerung.Steuerung;
 import UI.AppFrame;
@@ -66,6 +67,20 @@ public class Ordner extends TodoItem implements TodoItemTask{
         this.todoItems = new ArrayList<>();
 
         this.menuList = new JPanel();
+    }
+    
+    @Override
+    public TodoData toData() {
+        TodoData data = new TodoData();
+
+        data.setType(getType());
+        data.setName(getName());
+        data.setColorRGB(farbe.getRGB());
+
+        for (TodoItem todoItem : todoItems) {
+            data.setTodoData(todoItem.toData());
+        }
+        return data;
     }
     
     /*
@@ -250,4 +265,5 @@ public class Ordner extends TodoItem implements TodoItemTask{
         };
         return ml;
     }
+
 }

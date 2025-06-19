@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.swing.JPanel;
 
+import Data.TodoData;
 import Interface.TodoItemTask;
 
 public abstract class TodoItem {
@@ -64,7 +65,7 @@ public abstract class TodoItem {
         }
         return false;
     }
-
+    public abstract TodoData toData();
     public abstract JPanel display();
     protected abstract MouseListener mouseClicked();
 }
