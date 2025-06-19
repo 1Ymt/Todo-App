@@ -11,6 +11,41 @@ import Interface.TodoItemTask;
 import Steuerung.Steuerung;
 import UI.AppFrame;
 
+/*
+ * ---WICHTIG---
+ * Eine TodoData Klasse erstellen, um Informationen für den Json File zu speichern.
+ * Mache auch so, dass man genau sieht, ob eine Ordner oder eine Task anfängt, mache das am besten mit einem Array so dass es so im Json aussieht
+ * 
+ * {
+ *  Ordner "NAME": [
+ *      "name": "Hallo",
+        "type": "Ordner",
+        "number": "1",
+        "colorRGB": -16777216,
+        "todoItem": []
+        }
+ *  ]
+ * }
+ * 
+ * So it die TodoData Klasse:
+ * 
+ * public class TodoData {
+        String name;
+        String type;
+        String number;
+        int colorRGB;
+        List<TodoData> todoItem;
+
+        public TodoData(String name, String type, String number, int colorRGB) {
+            this.name = name;
+            this.type = type;
+            this.number = number;
+            this.colorRGB = colorRGB;
+            this.todoItem = new ArrayList<>();
+        }
+    }
+ */
+
 public class Ordner extends TodoItem implements TodoItemTask{
 
     private Ordner ordner;
