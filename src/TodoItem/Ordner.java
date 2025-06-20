@@ -120,8 +120,8 @@ public class Ordner extends TodoItem implements TodoItemTask{
     }
 
     @Override
-    public TodoItem[] getTodoItems() {
-        return todoItems.toArray(new TodoItem[0]);
+    public ArrayList<TodoItem> getTodoItems() {
+        return todoItems;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class Ordner extends TodoItem implements TodoItemTask{
 
     @Override
     public void addTodoItem(TodoItem todoItem) {
-        todoItems.add(todoItem);
+        todoItems.addFirst(todoItem);
         updateMenuList();
     }
 

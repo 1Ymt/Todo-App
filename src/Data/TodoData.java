@@ -40,6 +40,6 @@ public class TodoData {
     }
 
     public void setTodoData(TodoData todoData) {
-        this.todoData.add(todoData);
+        this.todoData.addLast(todoData);
     }
 }
