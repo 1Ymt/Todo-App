@@ -29,11 +29,13 @@ public class Steuerung {
         this.folderManager = new FolderManager(this, mainMenu);
 
         appFrame.addMainPanel(folderManager);
-
-        File file = new File("Saved");
-        if(file.isFile()) {
-            openSaveFile();
-        }
+        /*
+         * File file = new File("Saved");
+                if(file.isFile()) {
+                    openSaveFile();
+                }
+         */
+        
     }
 
     /*
@@ -44,26 +46,28 @@ public class Steuerung {
     }
 
     public void createOrdner(String name, Color farbe, JDialog dialog, TodoItemTask todoItemTask) {
-        TodoItem[] todoItems = todoItemTask.getTodoItems();
+        System.out.println(name);
 
         if(name.equals("")) {
             name = "Unbennant";
             int index = 1;
 
-            for (TodoItem todoItem : todoItems) {
+            for (TodoItem todoItem : todoItemTask.getTodoItems().reversed()) {
                 if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
                     name = "Unbennant" +  " (" + index + ")";
                     index++;
                 }
             }
-        }
-
-        for (TodoItem todoItem : todoItems) {
-            if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
-                JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
-                return;
+        }else {
+            for (TodoItem todoItem : todoItemTask.getTodoItems()) {
+                if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
+                    JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
+                    return;
+                }
             }
         }
+
+        
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
         Ordner ordner = new Ordner(this, todoItemTask, appFrame, name, farbe);
         todoItemTask.addTodoItem(ordner);
