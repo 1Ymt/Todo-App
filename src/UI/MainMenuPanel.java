@@ -17,6 +17,7 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
     private AppFrame appFrame;
     private ArrayList<TodoItem> todoItems;
     private JPanel menuList;
+    private JScrollPane scrollPane;
 
     public MainMenuPanel(Steuerung steuerung, AppFrame appFrame) {
         this.steuerung = steuerung;
@@ -28,7 +29,9 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
         this.setPreferredSize(appFrame.getSize());
         this.setLayout(new BorderLayout());
 
-        this.add(createMainMenuListPanel(), BorderLayout.CENTER);
+        this.scrollPane = new JScrollPane(createMainMenuListPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        this.add(scrollPane, BorderLayout.CENTER);
         this.add(createTopMenuPanel(), BorderLayout.NORTH);
         this.add(createSidePanel(), BorderLayout.WEST);
         this.add(createSidePanel(), BorderLayout.EAST);
@@ -36,10 +39,10 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
 
     public TodoData toData() {
         TodoData data = new TodoData();
-
-        data.setType("MainMenu");
+        
         data.setName("Main Menu");
-
+        data.setType("MainMenu");
+        
         for (TodoItem todoItem : todoItems) {
             data.setTodoData(todoItem.toData());
         }
@@ -73,6 +76,8 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
         
         menuList.revalidate();
         menuList.repaint();
+        scrollPane.revalidate();
+        scrollPane.repaint();
     }
 
     private JPanel createSidePanel() {

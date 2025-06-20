@@ -73,8 +73,8 @@ public class Ordner extends TodoItem implements TodoItemTask{
     public TodoData toData() {
         TodoData data = new TodoData();
 
-        data.setType(getType());
         data.setName(getName());
+        data.setType(getType());
         data.setColorRGB(farbe.getRGB());
 
         for (TodoItem todoItem : todoItems) {
@@ -265,5 +265,4 @@ public class Ordner extends TodoItem implements TodoItemTask{
         };
         return ml;
     }
-
 }

@@ -3,8 +3,8 @@ package Data;
 import java.util.ArrayList;
 
 public class TodoData {
-    private String type;
     private String name;
+    private String type;
     private int colorRGB;
     private ArrayList<TodoData> todoData = new ArrayList<>();;
 

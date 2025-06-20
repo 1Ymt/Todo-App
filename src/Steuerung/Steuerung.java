@@ -46,8 +46,6 @@ public class Steuerung {
     }
 
     public void createOrdner(String name, Color farbe, JDialog dialog, TodoItemTask todoItemTask) {
-        System.out.println(name);
-
         if(name.equals("")) {
             name = "Unbennant";
             int index = 1;
@@ -161,7 +159,7 @@ public class Steuerung {
     }
 
     private void deserialize(TodoData data, TodoItemTask parent) {
-        for (TodoData todoData : data.getTodoData()) {
+        for (TodoData todoData : data.getTodoData().reversed()) {
             if(todoData.getType().equals("Ordner")) {
 
             Ordner ordner = new Ordner(this, parent, appFrame, todoData.getName(), new Color(todoData.getColorRGB()));
