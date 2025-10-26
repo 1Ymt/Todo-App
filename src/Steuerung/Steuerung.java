@@ -29,12 +29,12 @@ public class Steuerung {
         this.folderManager = new FolderManager(this, mainMenu);
 
         appFrame.addMainPanel(folderManager);
-        /*
-         * File file = new File("Saved");
-                if(file.isFile()) {
-                    openSaveFile();
-                }
-         */
+        
+        File file = new File("Saved");
+             if(file.isFile()) {
+                 openSaveFile();
+             }
+        
         
     }
 
