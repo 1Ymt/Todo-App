@@ -1,9 +1,18 @@
 package Steuerung;
 
 import java.awt.*;
+import java.awt.MenuBar;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import javax.swing.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import Data.TodoData;
 import Dialog.*;
 import Interface.TodoItemTask;
 import TodoItem.*;
@@ -20,6 +29,13 @@ public class Steuerung {
         this.folderManager = new FolderManager(this, mainMenu);
 
         appFrame.addMainPanel(folderManager);
+        
+        File file = new File("Saved");
+             if(file.isFile()) {
+                 openSaveFile();
+             }
+        
+        
     }
 
     /*
@@ -30,26 +46,26 @@ public class Steuerung {
     }
 
     public void createOrdner(String name, Color farbe, JDialog dialog, TodoItemTask todoItemTask) {
-        TodoItem[] todoItems = todoItemTask.getTodoItems();
-
         if(name.equals("")) {
             name = "Unbennant";
             int index = 1;
 
-            for (TodoItem todoItem : todoItems) {
+            for (TodoItem todoItem : todoItemTask.getTodoItems().reversed()) {
                 if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
                     name = "Unbennant" +  " (" + index + ")";
                     index++;
                 }
             }
-        }
-
-        for (TodoItem todoItem : todoItems) {
-            if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
-                JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
-                return;
+        }else {
+            for (TodoItem todoItem : todoItemTask.getTodoItems()) {
+                if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
+                    JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
+                    return;
+                }
             }
         }
+
+        
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
         Ordner ordner = new Ordner(this, todoItemTask, appFrame, name, farbe);
         todoItemTask.addTodoItem(ordner);
@@ -119,5 +135,41 @@ public class Steuerung {
         }else 
         System.out.println("Fehler");
         return null;
+    }
+
+    public void serialize() {
+        try (FileWriter writer = new FileWriter("Saved")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+            gson.toJson(mainMenu.toData(), writer);
+            System.out.println("Successfully Saved");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openSaveFile() {    //Naming
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader("Saved")){
+            TodoData data = gson.fromJson(reader, TodoData.class);
+            deserialize(data, mainMenu);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    private void deserialize(TodoData data, TodoItemTask parent) {
+        for (TodoData todoData : data.getTodoData().reversed()) {
+            if(todoData.getType().equals("Ordner")) {
+
+            Ordner ordner = new Ordner(this, parent, appFrame, todoData.getName(), new Color(todoData.getColorRGB()));
+            parent.addTodoItem(ordner);
+            deserialize(todoData, ordner);
+            }else if(todoData.getType().equals("Task")) {
+
+            }else if(todoData.getType().equals("Notizen")) {
+
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import Data.TodoData;
 import Interface.TodoItemTask;
 import Steuerung.Steuerung;
 import UI.AppFrame;
@@ -68,6 +69,20 @@ public class Ordner extends TodoItem implements TodoItemTask{
         this.menuList = new JPanel();
     }
     
+    @Override
+    public TodoData toData() {
+        TodoData data = new TodoData();
+
+        data.setName(getName());
+        data.setType(getType());
+        data.setColorRGB(farbe.getRGB());
+
+        for (TodoItem todoItem : todoItems) {
+            data.setTodoData(todoItem.toData());
+        }
+        return data;
+    }
+    
     /*
      * Hier wird die Ordner an der MenuListe angeheftet. 
      * Es wird auch die Ordner an der jeweiligen Ordner Klasse verbunden, um es zu öffnen.
@@ -105,8 +120,8 @@ public class Ordner extends TodoItem implements TodoItemTask{
     }
 
     @Override
-    public TodoItem[] getTodoItems() {
-        return todoItems.toArray(new TodoItem[0]);
+    public ArrayList<TodoItem> getTodoItems() {
+        return todoItems;
     }
 
     @Override
@@ -116,7 +131,7 @@ public class Ordner extends TodoItem implements TodoItemTask{
 
     @Override
     public void addTodoItem(TodoItem todoItem) {
-        todoItems.add(todoItem);
+        todoItems.addFirst(todoItem);
         updateMenuList();
     }
 

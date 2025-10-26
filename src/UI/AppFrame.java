@@ -17,6 +17,9 @@ public class AppFrame extends JFrame{
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
+
+        MenuBar menuBar = new MenuBar(steuerung, this);
+        this.setJMenuBar(menuBar);
         
         this.setVisible(true);
     }

@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
+import Data.TodoData;
 import Interface.TodoItemTask;
 import Steuerung.Steuerung;
 import UI.AppFrame;
@@ -166,6 +167,12 @@ public class Task extends TodoItem{
             }
         };
         return ml;
+    }
+
+    @Override
+    public TodoData toData() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toData'");
     }
 
 }
