@@ -5,36 +5,37 @@ import java.time.LocalDateTime;
 import javax.swing.JPanel;
 
 import Data.TodoData;
-import Interface.TodoItemTask;
+import Enums.TodoType;
+import Interface.TodoListController;
 
 public abstract class TodoItem {
 
     private String name;
-    private String type;
-    private TodoItemTask parent;
-    private LocalDateTime datum;
+    private TodoType type;
+    private TodoListController parent;
+    private LocalDateTime date;
 
-    public TodoItem(String name, String type, TodoItemTask parent) {
+    public TodoItem(String name, TodoType type, TodoListController parent) {
         this.name = name;
         this.type = type;
         this.parent = parent;
-        this.datum = LocalDateTime.now();
+        this.date = LocalDateTime.now();
     }
 
     public String getName() {
         return name;
     }
 
-    public String getType() {
+    public TodoType getType() {
         return type;
     }
 
-    public TodoItemTask getParent() {
+    public TodoListController getParent() {
         return parent;
     }
 
     public LocalDateTime isCreatedDate() {
-        return datum;
+        return date;
     }
 
     public void setName(String name) {
@@ -42,29 +43,31 @@ public abstract class TodoItem {
     }
 
     public void updateDate() {
-        this.datum = LocalDateTime.now();
+        this.date = LocalDateTime.now();
     }
 
     public boolean isOrdner() {
-        if(type.equals("Ordner")) {
+        if(type == TodoType.Ordner) {
             return true;
         }
         return false;
     }
 
     public boolean isNotizen() {
-        if(type.equals("Notizen")) {
+        if(type == TodoType.Notizen) {
             return true;
         }
         return false;
     }
 
     public boolean isTask() {
-        if(type.equals("Task")) {
+        if (type == TodoType.Task) {
             return true;
         }
         return false;
     }
+    
+
     public abstract TodoData toData();
     public abstract JPanel display();
     protected abstract MouseListener mouseClicked();

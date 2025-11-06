@@ -2,20 +2,22 @@ package Data;
 
 import java.util.ArrayList;
 
+import Enums.TodoType;
+
 public class TodoData {
     private String name;
-    private String type;
+    private TodoType type;
     private int colorRGB;
     private ArrayList<TodoData> todoData = new ArrayList<>();;
 
     public TodoData() {
     }
 
-    public String getType() {
+    public TodoType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TodoType type) {
         this.type = type;
     }
 

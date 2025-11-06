@@ -1,7 +1,9 @@
 package Dialog;
 
 import Steuerung.Steuerung;
-import TodoItem.Ordner;
+import TodoItem.OrdnerFrame;
+import TodoItem.OrdnerSteuerung;
+
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
@@ -12,7 +14,7 @@ public class ChangeOrdnerProperties extends JDialog{
                                                 Color.MAGENTA, Color.GRAY, Color.BLACK};
 
     private Steuerung steuerung;
-    private Ordner ordner;
+    private OrdnerSteuerung ordner;
 
     private JTextField ordnerName;
     private JLabel ordnerIcon;
@@ -20,14 +22,14 @@ public class ChangeOrdnerProperties extends JDialog{
     private Color choosenColor;
     ImageIcon checkMarkIcon;
     
-    public ChangeOrdnerProperties(Steuerung steuerung, JFrame appFrame, Ordner ordner) {
+    public ChangeOrdnerProperties(Steuerung steuerung, JFrame appFrame, OrdnerSteuerung ordner) {
         super(appFrame, "Ändern", true);
         this.steuerung = steuerung;
         this.ordner = ordner;
 
         this.checkMarkIcon = new ImageIcon(getClass().getResource("/Icons/checkmark.PNG"));
         this.colorButton = new JButton[colors.length];
-        this.choosenColor = ordner.getFarbe();
+        this.choosenColor = ordner.getOrdnerFarbe();
 
         this.setSize(600, 400);
         this.setLayout(new BorderLayout());
@@ -191,7 +193,7 @@ public class ChangeOrdnerProperties extends JDialog{
         if(button.getName().equals("Bestätigt")) {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
-            ordner.setFarbe(choosenColor);
+            ordner.setOrdnerFarbe(choosenColor);
             if(ordnerName.getText().isBlank()) {
                 ordner.setName(ordner.getName());
             }else {

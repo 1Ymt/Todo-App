@@ -2,7 +2,7 @@ package Dialog;
 
 import javax.swing.*;
 
-import Interface.TodoItemTask;
+import Interface.TodoListController;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -15,7 +15,7 @@ public class OrdnerDialog extends JDialog{
                                                 Color.MAGENTA, Color.GRAY, Color.BLACK};
 
     private Steuerung steuerung;
-    private TodoItemTask todoItemClass;
+    private TodoListController todoItemClass;
 
     private JTextField ordnerName;
     private JLabel ordnerIcon;
@@ -23,7 +23,7 @@ public class OrdnerDialog extends JDialog{
     private Color choosenColor;
     ImageIcon checkMarkIcon;
     
-    public OrdnerDialog(Steuerung steuerung, JFrame appFrame, TodoItemTask todoItemClass) {
+    public OrdnerDialog(Steuerung steuerung, JFrame appFrame, TodoListController todoItemClass) {
         super(appFrame, "Ordner", true);
         this.steuerung = steuerung;
         this.todoItemClass = todoItemClass;

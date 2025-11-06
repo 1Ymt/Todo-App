@@ -3,7 +3,8 @@ package UI;
 import javax.swing.*;
 
 import Data.TodoData;
-import Interface.TodoItemTask;
+import Enums.TodoType;
+import Interface.TodoListController;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import Steuerung.Steuerung;
 import TodoItem.TodoItem;
 
-public class MainMenuPanel extends JPanel implements TodoItemTask{
+public class MainMenu extends JPanel implements TodoListController{
 
     private Steuerung steuerung;
     private AppFrame appFrame;
@@ -19,7 +20,7 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
     private JPanel menuList;
     private JScrollPane scrollPane;
 
-    public MainMenuPanel(Steuerung steuerung, AppFrame appFrame) {
+    public MainMenu(Steuerung steuerung, AppFrame appFrame) {
         this.steuerung = steuerung;
         this.appFrame = appFrame;
         this.todoItems = new ArrayList<>();
@@ -31,6 +32,9 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
 
         this.scrollPane = new JScrollPane(createMainMenuListPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        scrollPane.getVerticalScrollBar().setBackground(steuerung.getPanelBackgroundColor(0));
+        scrollPane.getVerticalScrollBar().setOpaque(true);
+        scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(createTopMenuPanel(), BorderLayout.NORTH);
         this.add(createSidePanel(), BorderLayout.WEST);
@@ -41,7 +45,7 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
         TodoData data = new TodoData();
         
         data.setName("Main Menu");
-        data.setType("MainMenu");
+        data.setType(TodoType.MainMenu);
         
         for (TodoItem todoItem : todoItems) {
             data.setTodoData(todoItem.toData());
@@ -73,23 +77,28 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
             menuList.add(todoItem.display());
             menuList.add(Box.createRigidArea(new Dimension(0, 10)));
         }
-        
+
         menuList.revalidate();
         menuList.repaint();
         scrollPane.revalidate();
         scrollPane.repaint();
     }
+    
+    @Override
+    public String getParentName() {
+        return getName();
+    }
 
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(Color.WHITE);
+        sidePanel.setBackground(steuerung.getPanelBackgroundColor(0));
         sidePanel.setPreferredSize(new Dimension(50, (int) appFrame.getSize().getHeight()));
         return sidePanel;
     }
 
     private JPanel createMainMenuListPanel() {
         menuList.setName("MenuList");
-        menuList.setBackground(new Color(110, 128, 210));
+        menuList.setBackground(steuerung.getPanelBackgroundColor(0));
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
         return menuList;
     }
@@ -114,16 +123,16 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
 
         JPanel wrapperLabel = new JPanel();
         wrapperLabel.setPreferredSize(menuName.getPreferredSize());
-        wrapperLabel.setBackground(Color.WHITE);
+        wrapperLabel.setBackground(steuerung.getPanelBackgroundColor(0));
         wrapperLabel.add(menuName);
 
         JPanel leftBalancePanel = new JPanel();
         leftBalancePanel.setPreferredSize(new Dimension(45, 45));
-        leftBalancePanel.setBackground(Color.WHITE);
+        leftBalancePanel.setBackground(steuerung.getPanelBackgroundColor(0));
 
         JPanel rightBalancePanel = new JPanel();
         rightBalancePanel.setPreferredSize(new Dimension(45, 45));
-        rightBalancePanel.setBackground(Color.WHITE);
+        rightBalancePanel.setBackground(steuerung.getPanelBackgroundColor(0));
 
         menuNamePanel.add(leftBalancePanel, BorderLayout.WEST);
         menuNamePanel.add(rightBalancePanel, BorderLayout.EAST);
@@ -134,7 +143,7 @@ public class MainMenuPanel extends JPanel implements TodoItemTask{
 
     private JPanel createTodoItemButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(steuerung.getPanelBackgroundColor(0));
         buttonPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
         JButton todoItemButton = new JButton("Neu");

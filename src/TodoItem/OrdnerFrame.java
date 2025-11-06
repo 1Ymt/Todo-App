@@ -1,15 +1,6 @@
 package TodoItem;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
 import javax.swing.*;
-
-import Data.TodoData;
-import Interface.TodoItemTask;
-import Steuerung.Steuerung;
 import UI.AppFrame;
 
 /*
@@ -47,65 +38,46 @@ import UI.AppFrame;
     }
  */
 
-public class Ordner extends TodoItem implements TodoItemTask{
+public class OrdnerFrame {
 
-    private Ordner ordner;
-    private Steuerung steuerung;
+    private OrdnerSteuerung ordnerSteuerung;
     private AppFrame appFrame;
     
-    private Color farbe;
-    private ArrayList<TodoItem> todoItems;
+    private Color ordnerFarbe;
     private JPanel menuList;
 
-    public Ordner(Steuerung steuerung, TodoItemTask parent, AppFrame appFrame, String name, Color farbe) {
-        super(name, "Ordner", parent);
-        this.steuerung = steuerung;
+    public OrdnerFrame(OrdnerSteuerung ordnerSteuerung, AppFrame appFrame, Color farbe) {
+        this.ordnerSteuerung = ordnerSteuerung;
         this.appFrame = appFrame;
-        this.ordner = this;
-        this.farbe = farbe;
 
-        this.todoItems = new ArrayList<>();
+        this.ordnerFarbe = farbe;
 
         this.menuList = new JPanel();
-    }
-    
-    @Override
-    public TodoData toData() {
-        TodoData data = new TodoData();
-
-        data.setName(getName());
-        data.setType(getType());
-        data.setColorRGB(farbe.getRGB());
-
-        for (TodoItem todoItem : todoItems) {
-            data.setTodoData(todoItem.toData());
-        }
-        return data;
     }
     
     /*
      * Hier wird die Ordner an der MenuListe angeheftet. 
      * Es wird auch die Ordner an der jeweiligen Ordner Klasse verbunden, um es zu öffnen.
      */
-    @Override
-    public JPanel display() {
+    public JPanel getDisplayPanel() {
         JPanel orderPanel = new JPanel();
-        orderPanel.setName(this.getName());
+        //orderPanel.setName(ordnerSteuerung.getName());    why name panel?
         orderPanel.setLayout(new FlowLayout());
-        orderPanel.setMaximumSize(new Dimension(500, 60));
+        orderPanel.setPreferredSize(new Dimension(ordnerSteuerung.getParent().getMenuList().getWidth(), 60));
+        orderPanel.setMaximumSize(new Dimension(2000, 60));
         orderPanel.setBackground(new Color(95, 111, 181));
-        orderPanel.addMouseListener(mouseClicked());
-        orderPanel.setToolTipText(this.getName());
+        orderPanel.addMouseListener(ordnerSteuerung.mouseClicked());
+        orderPanel.setToolTipText(ordnerSteuerung.getName());
         JPanel ordnerZeichen = new JPanel(new BorderLayout());
         ordnerZeichen.setPreferredSize(new Dimension(45,45));
         ordnerZeichen.setOpaque(false);
 
-        JLabel ordnerIcon = new JLabel(steuerung.setOrdnerIcon(farbe, 45));
+        JLabel ordnerIcon = new JLabel(ordnerSteuerung.getIcon(ordnerFarbe, 45));
 
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setOpaque(false);
 
-        JLabel ordnerName = new JLabel(this.getName());
+        JLabel ordnerName = new JLabel(ordnerSteuerung.getName());
         ordnerName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 15));
         ordnerName.setPreferredSize(new Dimension(200,40));
 
@@ -119,47 +91,11 @@ public class Ordner extends TodoItem implements TodoItemTask{
         return orderPanel;
     }
 
-    @Override
-    public ArrayList<TodoItem> getTodoItems() {
-        return todoItems;
-    }
-
-    @Override
-    public JPanel getMenuList() {
-        return menuList;
-    }
-
-    @Override
-    public void addTodoItem(TodoItem todoItem) {
-        todoItems.addFirst(todoItem);
-        updateMenuList();
-    }
-
-    @Override
-    public void updateMenuList() {
-        menuList.removeAll();
-        for (TodoItem todoItem : todoItems) {
-            menuList.add(todoItem.display());
-            menuList.add(Box.createRigidArea(new Dimension(0, 10)));
-        }
-        
-        menuList.revalidate();
-        menuList.repaint();
-    }
-
-    public Color getFarbe() {
-        return farbe;
-    }
-
-    public void setFarbe(Color farbe) {
-        this.farbe = farbe;
-    }
-
     /*
      * Panels 
      */
 
-    public JPanel ordnerMenuListPanel() {
+    public JPanel ordnerMenuPanel() {
         JPanel backgroundListPanel = new JPanel();
         backgroundListPanel.setLayout(new BorderLayout());
         
@@ -200,7 +136,7 @@ public class Ordner extends TodoItem implements TodoItemTask{
         JPanel menuNamePanel = new JPanel(new BorderLayout());
         menuNamePanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
-        JLabel menuName = new JLabel(this.getName());
+        JLabel menuName = new JLabel(ordnerSteuerung.getName());
         menuName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 20));
 
         JPanel wrapperLabel = new JPanel();
@@ -208,35 +144,38 @@ public class Ordner extends TodoItem implements TodoItemTask{
         wrapperLabel.setBackground(Color.WHITE);
         wrapperLabel.add(menuName);
 
-        JButton backButton = new JButton("Back");
-        backButton.setPreferredSize(new Dimension(30,30));
-        backButton.addActionListener(e -> steuerung.previousMenuPanel(ordnerMenuListPanel()));
+        if (ordnerSteuerung.getParent() != null) {
+            JButton backButton = new JButton("Back");
+            backButton.setPreferredSize(new Dimension(30, 30));
+            backButton.addActionListener(e -> ordnerSteuerung.previousPanel(ordnerMenuPanel()));
 
-        JPanel wrapperButton = new JPanel(new GridBagLayout());
-        wrapperButton.setPreferredSize(new Dimension(45, 45));
-        wrapperButton.setBackground(Color.WHITE);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.CENTER;
-        wrapperButton.add(backButton, gbc);
+            JPanel wrapperButton = new JPanel(new GridBagLayout());
+            wrapperButton.setPreferredSize(new Dimension(45, 45));
+            wrapperButton.setBackground(Color.WHITE);
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.anchor = GridBagConstraints.CENTER;
+            wrapperButton.add(backButton, gbc);
 
-        JPanel balancePanel = new JPanel();
-        balancePanel.setPreferredSize(wrapperButton.getPreferredSize());
-        balancePanel.setBackground(Color.WHITE);
+            JPanel balancePanel = new JPanel();
+            balancePanel.setPreferredSize(wrapperButton.getPreferredSize());
+            balancePanel.setBackground(Color.WHITE);
 
-        menuNamePanel.add(wrapperButton, BorderLayout.WEST);
-        menuNamePanel.add(balancePanel, BorderLayout.EAST);
+            menuNamePanel.add(wrapperButton, BorderLayout.WEST);
+            menuNamePanel.add(balancePanel, BorderLayout.EAST);
+        }
+        
         menuNamePanel.add(wrapperLabel, BorderLayout.CENTER);
         
         return menuNamePanel;
     }
 
     private JPanel createTodoItemButtonPanel() {
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
         JButton todoItemButton = new JButton("Neu");
-        todoItemButton.addActionListener(e -> steuerung.createNeueTodoItemMainMenu(this));
+        todoItemButton.addActionListener(e -> ordnerSteuerung.createNewTodoItem());
 
         JPanel wrapperButton = new JPanel(new BorderLayout());
         wrapperButton.setPreferredSize(new Dimension(200, 40));
@@ -247,22 +186,11 @@ public class Ordner extends TodoItem implements TodoItemTask{
         return buttonPanel;
     }
 
-    /*
-     * Steuerung
-     */
-
-    protected MouseListener mouseClicked() {
-        MouseListener ml = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(ordnerMenuListPanel());
-
-                }else if(e.getButton() == MouseEvent.BUTTON3) {
-                    steuerung.changeOrdnerProperties(ordner);
-                }
-            }
-        };
-        return ml;
+    public void setOrdnerFarbe(Color farbe) {
+        ordnerFarbe = farbe;
+    }
+    
+    public JPanel getMenuList() {
+        return menuList;
     }
 }

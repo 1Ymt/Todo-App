@@ -15,10 +15,10 @@ public class MenuBar extends JMenuBar{
     }
 
     private JMenu saving() {
-        JMenu menuItem = new JMenu("Save");
+        JMenu menuItem = new JMenu("File");
 
         JMenuItem savingButton = new JMenuItem("Saving");
-        savingButton.addActionListener(e -> steuerung.serialize());
+        savingButton.addActionListener(e -> steuerung.save());
         savingButton.setEnabled(true);
 
         JMenuItem openButton = new JMenuItem("Open");

@@ -7,18 +7,20 @@ import javax.swing.*;
 public class FolderManager extends JPanel{
 
     private Steuerung steuerung;
-    CardLayout cardLayout;
+    private CardLayout cardLayout;
     private ArrayList<JPanel> ordnerArray;
 
-    public FolderManager(Steuerung steuerung, JPanel mainMenu) {
+    public FolderManager(Steuerung steuerung) {
         this.steuerung = steuerung;
         this.ordnerArray = new ArrayList<>();
 
         this.cardLayout = new CardLayout();
         this.setLayout(cardLayout);
+    }
 
-        this.add(mainMenu, "1");
-        ordnerArray.add(mainMenu);
+    public void addMainMenu(JPanel mainMenu) {
+        this.add(mainMenu, ("1"));
+        this.revalidate();
     }
 
     public void next(JPanel panel) {

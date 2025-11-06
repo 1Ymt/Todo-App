@@ -1,35 +1,27 @@
 package TodoItem;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
+import java.awt.*;
 import javax.swing.*;
 
-import Data.TodoData;
-import Interface.TodoItemTask;
-import Steuerung.Steuerung;
 import UI.AppFrame;
 
-public class Task extends TodoItem{
+public class TaskFrame {
 
-    private Steuerung steuerung;
+    private TaskSteuerung taskSteuerung;
     private AppFrame appFrame;
 
-    public Task(String name, String type, TodoItemTask parent, Steuerung steuerung, AppFrame appFrame) {
-        super(name, type, parent);
-        
+    public TaskFrame(TaskSteuerung taskSteuerung, AppFrame appFrame) {
+        this.taskSteuerung = taskSteuerung;
+        this.appFrame = appFrame;
     }
 
-    @Override
-    public JPanel display() {
+    public JPanel getDisplayPanel() {
         JPanel taskPanel = new JPanel();
-        taskPanel.setName(this.getName());
         taskPanel.setLayout(new FlowLayout());
         taskPanel.setMaximumSize(new Dimension(500, 60));
         taskPanel.setBackground(new Color(95, 111, 181));
-        taskPanel.addMouseListener(mouseClicked());
-        taskPanel.setToolTipText(this.getName());
+        taskPanel.addMouseListener(taskSteuerung.mouseClicked());
+        taskPanel.setToolTipText(taskSteuerung.getName());
         JPanel taskZeichen = new JPanel(new BorderLayout());
         taskZeichen.setPreferredSize(new Dimension(45,45));
         taskZeichen.setOpaque(true);
@@ -39,7 +31,7 @@ public class Task extends TodoItem{
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setOpaque(false);
 
-        JLabel taskName = new JLabel(this.getName());
+        JLabel taskName = new JLabel(taskSteuerung.getName());
         taskName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 15));
         taskName.setPreferredSize(new Dimension(200,40));
 
@@ -99,7 +91,7 @@ public class Task extends TodoItem{
         JPanel menuNamePanel = new JPanel(new BorderLayout());
         menuNamePanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
-        JLabel menuName = new JLabel(this.getName());
+        JLabel menuName = new JLabel(taskSteuerung.getName());
         menuName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 20));
 
         JPanel wrapperLabel = new JPanel();
@@ -109,7 +101,7 @@ public class Task extends TodoItem{
 
         JButton backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(30,30));
-        backButton.addActionListener(e -> steuerung.previousMenuPanel(taskMenuListPanel()));
+        backButton.addActionListener(e -> taskSteuerung.previousPanel(taskMenuListPanel()));
 
         JPanel wrapperButton = new JPanel(new GridBagLayout());
         wrapperButton.setPreferredSize(new Dimension(45, 45));
@@ -135,7 +127,7 @@ public class Task extends TodoItem{
         buttonPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
         JButton todoItemButton = new JButton("Neu");
-        todoItemButton.addActionListener(e -> createNeueTaskItem());
+        todoItemButton.addActionListener(e -> taskSteuerung.createNeueTaskItem());
 
         JPanel wrapperButton = new JPanel(new BorderLayout());
         wrapperButton.setPreferredSize(new Dimension(200, 40));
@@ -150,29 +142,5 @@ public class Task extends TodoItem{
      * Steuerung
      */
 
-    private void createNeueTaskItem() {
-        System.out.println("Neue Task");
-    }
-
-    protected MouseListener mouseClicked() {
-        MouseListener ml = new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(taskMenuListPanel());
-
-                }else if(e.getButton() == MouseEvent.BUTTON3) {
-                    //steuerung.changeOrdnerProperties(ordner);
-                }
-            }
-        };
-        return ml;
-    }
-
-    @Override
-    public TodoData toData() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toData'");
-    }
-
+    
 }

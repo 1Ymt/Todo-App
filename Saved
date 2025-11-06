@@ -1,18 +1,24 @@
 {
   "name": "Main Menu",
-  "type": "MainMenu",
-  "colorRGB": 0,
+  "type": "Ordner",
+  "colorRGB": -16777216,
   "todoData": [
     {
-      "name": "Unbennant (1)",
+      "name": "Unbennant (2)",
       "type": "Ordner",
       "colorRGB": -16711681,
       "todoData": []
     },
     {
+      "name": "Unbennant (1)",
+      "type": "Ordner",
+      "colorRGB": -8355712,
+      "todoData": []
+    },
+    {
       "name": "Unbennant",
       "type": "Ordner",
-      "colorRGB": -16711681,
+      "colorRGB": -14336,
       "todoData": []
     }
   ]
