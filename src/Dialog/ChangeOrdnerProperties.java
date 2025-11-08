@@ -1,12 +1,14 @@
 package Dialog;
 
 import Steuerung.Steuerung;
-import TodoItem.OrdnerFrame;
 import TodoItem.OrdnerSteuerung;
+import TodoItem.TodoItem;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
+
+import Interface.TodoListController;
 
 public class ChangeOrdnerProperties extends JDialog{
 
@@ -207,7 +209,15 @@ public class ChangeOrdnerProperties extends JDialog{
         }
     }
     private void deleteButtonConfirmation() {
-        System.out.println("Delete");
+        int option = JOptionPane.showConfirmDialog(this, "Willst du wirklich diesen Ordner löschen?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        
+        if (option == JOptionPane.YES_OPTION) {
+            TodoListController parent = ordner.getParent();
+            parent.getTodoItems().remove(ordner);
+            parent.updateMenuList();
+            JOptionPane.showMessageDialog(this, "Ordner wurde gelöscht!");
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        }
     }
 
     private ImageIcon checkmarkIcon() {

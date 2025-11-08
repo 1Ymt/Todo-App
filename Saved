@@ -4,21 +4,21 @@
   "colorRGB": -16777216,
   "todoData": [
     {
-      "name": "Unbennant (2)",
+      "name": "asdd",
+      "type": "Ordner",
+      "colorRGB": -65281,
+      "todoData": []
+    },
+    {
+      "name": "asd",
       "type": "Ordner",
       "colorRGB": -16711681,
       "todoData": []
     },
     {
-      "name": "Unbennant (1)",
+      "name": "Unbennant (2)",
       "type": "Ordner",
-      "colorRGB": -8355712,
-      "todoData": []
-    },
-    {
-      "name": "Unbennant",
-      "type": "Ordner",
-      "colorRGB": -14336,
+      "colorRGB": -16711681,
       "todoData": []
     }
   ]

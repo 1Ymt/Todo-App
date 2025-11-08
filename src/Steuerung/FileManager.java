@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,7 +35,7 @@ public class FileManager {
         try (FileWriter writer = new FileWriter(FILENAME)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
             gson.toJson(mainMenu.toData(), writer);
-            System.out.println("Successfully Saved");
+            JOptionPane.showMessageDialog(appFrame, "Wurde erfolgreicht gespeichert!");
         } catch (Exception e) {
             e.printStackTrace();
         }
