@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 
 import Data.NotizenData;
 import Data.OrdnerData;
@@ -39,10 +40,12 @@ public class FileManager {
 
     public void save() {
         try (FileWriter writer = new FileWriter(FILENAME)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls()
+                    .registerTypeHierarchyAdapter(TodoData.class, new TodoDataSerializer()).create();
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
             gson.toJson(mainMenu.toData(), writer);
             JOptionPane.showMessageDialog(appFrame, "Wurde erfolgreicht gespeichert!");
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +65,7 @@ public class FileManager {
             deserializer.registerDataType(TodoType.Ordner, OrdnerData.class);
 
             Gson gson = new GsonBuilder().registerTypeAdapter(TodoData.class, deserializer).create();
+            //Gson gson = new Gson();
 
             OrdnerData data = gson.fromJson(reader, OrdnerData.class);
             List<TodoData> datas = data.getTodoData();
