@@ -19,7 +19,7 @@ public class TodoItemDialog extends JDialog{
     private Steuerung steuerung;
     private JFrame appFrame;
     private TodoListController todoItemClass;
-    private JToggleButton[] allTodoItemsButtonArray;
+    private JToggleButton[] allTodoItemsButton;
     private String taskAuswahl;
 
     public TodoItemDialog(Steuerung steuerung, JFrame appFrame, TodoListController todoItemClass) {
@@ -30,7 +30,7 @@ public class TodoItemDialog extends JDialog{
 
         
 
-        this.allTodoItemsButtonArray = new JToggleButton[ITEMNAMES.length];
+        this.allTodoItemsButton = new JToggleButton[ITEMNAMES.length];
         this.taskAuswahl = "";
         
         this.setSize(500, 300);
@@ -59,7 +59,7 @@ public class TodoItemDialog extends JDialog{
          * dann soll ein Button mit dem Namen im Array (itemNames) erschaffen werden.
          */
         for (int i = 0; i < ITEMNAMES.length; i++) {
-            mainMenuList.add(createAllTodoItemButtons(ITEMNAMES[i], i));
+            mainMenuList.add(createTodoItemButton(ITEMNAMES[i], i));
         }
         return mainMenuList;
     }
@@ -67,20 +67,20 @@ public class TodoItemDialog extends JDialog{
     /*
      * Hilfsmethode für die createMainMenuListPanel, um die allTodoItemsButtonArray Button zu erschaffen
      */
-    private JPanel createAllTodoItemButtons(TodoType name, int i) {
+    private JPanel createTodoItemButton(TodoType name, int i) {
         //WrapperPanel für den Button erzeugt um ein besseres Managment für den Layout zu haben
         JPanel wrapperButton = new JPanel(new FlowLayout(FlowLayout.LEFT,  5, 5)); 
         wrapperButton.setOpaque(false);
         wrapperButton.setAlignmentX(Component.LEFT_ALIGNMENT);  //Schiebt die Tasks Buttons nach links.
 
-        allTodoItemsButtonArray[i] = new JToggleButton(name.name());
-        allTodoItemsButtonArray[i].setName(name.name());
-        allTodoItemsButtonArray[i].setPreferredSize(new Dimension(300,35));
-        allTodoItemsButtonArray[i].setBackground(Color.WHITE);
-        allTodoItemsButtonArray[i].addItemListener(e -> allTodoItemsButtoListener(allTodoItemsButtonArray[i])); //Lampda Expression
+        allTodoItemsButton[i] = new JToggleButton(name.name());
+        allTodoItemsButton[i].setName(name.name());
+        allTodoItemsButton[i].setPreferredSize(new Dimension(300,35));
+        allTodoItemsButton[i].setBackground(Color.WHITE);
+        allTodoItemsButton[i].addItemListener(e -> allTodoItemsButtoListener(allTodoItemsButton[i])); //Lampda Expression
 
-        wrapperButton.setMaximumSize(allTodoItemsButtonArray[i].getPreferredSize());
-        wrapperButton.add(allTodoItemsButtonArray[i]);
+        wrapperButton.setMaximumSize(allTodoItemsButton[i].getPreferredSize());
+        wrapperButton.add(allTodoItemsButton[i]);
 
         return wrapperButton;
     }
@@ -138,9 +138,9 @@ public class TodoItemDialog extends JDialog{
              * Wenn der aktuelle Button in i nicht der angeklickte Button von User ist,
              * dann soll alle button deselect.
              */
-            for (int i = 0; i < allTodoItemsButtonArray.length; i++) {
-                if (allTodoItemsButtonArray[i] != sourceButton) {
-                    allTodoItemsButtonArray[i].setSelected(false);
+            for (int i = 0; i < allTodoItemsButton.length; i++) {
+                if (allTodoItemsButton[i] != sourceButton) {
+                    allTodoItemsButton[i].setSelected(false);
                 }
             }
 
@@ -169,6 +169,7 @@ public class TodoItemDialog extends JDialog{
                 switch (types) {
                     case Notizen:
                         System.out.println("Notizen");
+                        steuerung.createNotizen("", this, todoItemClass);
                         break;
                     case Ordner:
                         new OrdnerDialog(steuerung, appFrame, todoItemClass);
