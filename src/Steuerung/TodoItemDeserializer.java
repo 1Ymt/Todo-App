@@ -28,11 +28,13 @@ public class TodoItemDeserializer implements JsonDeserializer<TodoData> {
     public TodoData deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject dataObject = json.getAsJsonObject();
         
+        //Bekommt TodoType von Json.
         JsonElement dataTypeElement = dataObject.get("type");
-        System.out.println(dataTypeElement);
 
+        //Bekommt die jeweilige Klasse bezogen auf des TodoType im dataTypeRegistry.
         Class<? extends TodoData> dataClass = dataTypeRegistry.get(TodoType.valueOf(dataTypeElement.getAsString()));
 
+        //Return die Daten des Json in den jeweils richtige Klasse zurück
         return context.deserialize(dataObject, dataClass);
     }
 
