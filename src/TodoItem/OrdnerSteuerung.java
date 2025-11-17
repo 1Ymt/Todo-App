@@ -11,6 +11,7 @@ import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import Data.OrdnerData;
 import Data.TodoData;
 import Enums.TodoType;
 import Interface.TodoListController;
@@ -70,7 +71,7 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
 
     @Override
     public TodoData toData() {
-        TodoData data = new TodoData();
+        OrdnerData data = new OrdnerData();
 
         data.setName(getName());
         data.setType(getType());

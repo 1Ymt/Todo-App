@@ -2,7 +2,6 @@ package Dialog;
 
 import Steuerung.Steuerung;
 import TodoItem.OrdnerSteuerung;
-import TodoItem.TodoItem;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
