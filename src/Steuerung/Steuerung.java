@@ -44,32 +44,56 @@ public class Steuerung {
         }
         return null;
     }
+
+    public void createNotizen(String name, JDialog dialog, TodoListController todoListClass) {
+        if(name.equals("")) {
+            name = "Unbennantes Notiz";
+            int index = 1;
+
+            for (TodoItem todoItem : todoListClass.getTodoItems().reversed()) {
+                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
+                    name = "Unbennant Notiz" +  " (" + index + ")";
+                    index++;
+                }
+            }
+        }else {
+            for (TodoItem todoItem : todoListClass.getTodoItems()) {
+                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
+                    JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
+                    return;
+                }
+            }
+        }
+        
+        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+        NotizenSteuerung notizenSteuerung = new NotizenSteuerung(this, appFrame, name, todoListClass);
+        todoListClass.addTodoItem(notizenSteuerung);
+    }
     
 
-    public void createOrdner(String name, Color ordnerFarbe, JDialog dialog, TodoListController TodoListClass) {
+    public void createOrdner(String name, Color ordnerFarbe, JDialog dialog, TodoListController todoListClass) {
         if(name.equals("")) {
             name = "Unbennant";
             int index = 1;
 
-            for (TodoItem todoItem : TodoListClass.getTodoItems().reversed()) {
+            for (TodoItem todoItem : todoListClass.getTodoItems().reversed()) {
                 if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
                     name = "Unbennant" +  " (" + index + ")";
                     index++;
                 }
             }
         }else {
-            for (TodoItem todoItem : TodoListClass.getTodoItems()) {
+            for (TodoItem todoItem : todoListClass.getTodoItems()) {
                 if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
                     JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
                     return;
                 }
             }
         }
-
         
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-        OrdnerSteuerung ordner = new OrdnerSteuerung(this, appFrame, name, TodoListClass, ordnerFarbe);
-        TodoListClass.addTodoItem(ordner);
+        OrdnerSteuerung ordnerSteuerung = new OrdnerSteuerung(this, appFrame, name, todoListClass, ordnerFarbe);
+        todoListClass.addTodoItem(ordnerSteuerung);
     }
 
     public void changeOrdnerProperties(OrdnerSteuerung ordner) {
