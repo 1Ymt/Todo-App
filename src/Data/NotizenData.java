@@ -1,17 +1,19 @@
 package Data;
 
+import java.util.ArrayList;
+
 public class NotizenData extends TodoData{
-    private String text;
+    private ArrayList<SegmentData> segments;
 
     public NotizenData() {
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public ArrayList<SegmentData> getSegments() {
+        return segments;
     }
 
-    public String getText() {
-        return text;
+    public void setSegments(ArrayList<SegmentData> segments) {
+        this.segments = segments;
     }
     
 }

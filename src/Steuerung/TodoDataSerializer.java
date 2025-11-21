@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import Data.NotizenData;
 import Data.OrdnerData;
+import Data.SegmentData;
 import Data.TodoData;
 
 public class TodoDataSerializer implements JsonSerializer<TodoData>{
@@ -25,18 +26,23 @@ public class TodoDataSerializer implements JsonSerializer<TodoData>{
                 obj.addProperty("name", ordnerData.getName());
                 obj.addProperty("colorRGB", ordnerData.getColorRGB());
 
-                JsonElement childrenJson = context.serialize(
+                JsonElement childrenOrdner = context.serialize(
                         ordnerData.getTodoData(),
                         new TypeToken<List<TodoData>>() {}.getType()
                 );
-                obj.add("todoData", childrenJson);
+                obj.add("todoData", childrenOrdner);
                 return obj;
 
             case Notizen:
                 NotizenData notizenData = (NotizenData) src;
                 obj.addProperty("type", notizenData.getType().name());
                 obj.addProperty("name", notizenData.getName());
-                obj.addProperty("text", notizenData.getText());
+
+                JsonElement segments = context.serialize(
+                        notizenData.getSegments(),
+                        new TypeToken<List<SegmentData>>() {}.getType()
+                );
+                obj.add("segments", segments);
                 return obj;
 
             case Task:

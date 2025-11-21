@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 
 import Data.NotizenData;
 import Data.OrdnerData;
@@ -69,7 +68,6 @@ public class FileManager {
 
             OrdnerData data = gson.fromJson(reader, OrdnerData.class);
             List<TodoData> datas = data.getTodoData();
-
             mainMenu = new OrdnerSteuerung(steuerung, appFrame, data.getName(), null, new Color(data.getColorRGB()));
             folderManager.addMainMenu(mainMenu.getMenuPanel());
 
@@ -95,6 +93,7 @@ public class FileManager {
                     NotizenData notizenData = (NotizenData) datas.get(i);
                     NotizenSteuerung notizen = new NotizenSteuerung(steuerung, appFrame, notizenData.getName(), parent);
                     parent.addTodoItem(notizen);
+                    notizen.setSegmentDataToStyledDocument(notizenData.getSegments());
                     break;
                 case Task:
                     break;
