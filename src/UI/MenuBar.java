@@ -4,6 +4,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import Enums.UiColor;
 import Steuerung.Steuerung;
 
 public class MenuBar extends JMenuBar{
@@ -11,7 +12,10 @@ public class MenuBar extends JMenuBar{
 
     MenuBar(Steuerung steuerung, AppFrame appFrame) {
         this.steuerung = steuerung;
+
+        this.setBackground(steuerung.getUiColor(UiColor.bgLight));
         this.add(saving());
+        this.add(config());
     }
 
     private JMenu saving() {
@@ -27,6 +31,18 @@ public class MenuBar extends JMenuBar{
 
         menuItem.add(savingButton);
         menuItem.add(openButton);
+        return menuItem;
+    }
+
+    private JMenu config() {
+        JMenu menuItem = new JMenu("Einstellung");
+
+        JMenuItem configButton = new JMenuItem("Config");
+        configButton.addActionListener(e -> steuerung.openConfig());
+        configButton.setEnabled(true);
+
+
+        menuItem.add(configButton);
         return menuItem;
     }
 }

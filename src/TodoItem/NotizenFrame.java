@@ -6,10 +6,13 @@ import javax.swing.*;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledDocument;
 
+import Enums.UiColor;
+import Steuerung.Steuerung;
 import UI.AppFrame;
 
 public class NotizenFrame {
 
+    private Steuerung steuerung;
     private NotizenSteuerung notizenSteuerung;
     private AppFrame appFrame;
 
@@ -20,7 +23,8 @@ public class NotizenFrame {
     private JComboBox<String> fonts;
     private JComboBox<Integer> fontSizes;
 
-    public NotizenFrame(NotizenSteuerung notizenSteuerung, AppFrame appFrame) {
+    public NotizenFrame(Steuerung steuerung, NotizenSteuerung notizenSteuerung, AppFrame appFrame) {
+        this.steuerung = steuerung;
         this.appFrame = appFrame;
         this.notizenSteuerung = notizenSteuerung;
 
@@ -35,10 +39,12 @@ public class NotizenFrame {
     public JPanel getDisplayPanel() {
         JPanel notizenPanel = new JPanel();
         notizenPanel.setLayout(new FlowLayout());
-        notizenPanel.setMaximumSize(new Dimension(500, 60));
-        notizenPanel.setBackground(new Color(95, 111, 181));
+        notizenPanel.setMaximumSize(new Dimension(appFrame.getWidth(), 60));
+        notizenPanel.setBackground(steuerung.getUiColor(UiColor.bgLight));
         notizenPanel.addMouseListener(notizenSteuerung.mouseClicked());
         notizenPanel.setToolTipText(notizenSteuerung.getName());
+        notizenPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+
         JPanel ordnerZeichen = new JPanel(new BorderLayout());
         ordnerZeichen.setPreferredSize(new Dimension(45, 45));
         ordnerZeichen.setOpaque(false);
@@ -51,6 +57,7 @@ public class NotizenFrame {
         JLabel notizenName = new JLabel(notizenSteuerung.getName());
         notizenName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 15));
         notizenName.setPreferredSize(new Dimension(200, 40));
+        notizenName.setBackground(steuerung.getUiColor(UiColor.text));
 
         ordnerZeichen.add(notizenIcon, BorderLayout.CENTER);
 
@@ -77,8 +84,8 @@ public class NotizenFrame {
     private JPanel createTopMenuPanel() {
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 90));
+        topPanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
 
-        //topPanel.add(createMenuNamePanel());
         topPanel.add(createToolbarMenuPanel());
 
         return topPanel;
@@ -86,60 +93,62 @@ public class NotizenFrame {
     
     private JPanel createToolbarMenuPanel() {
         JPanel toolbarMenu = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        toolbarMenu.setBackground(Color.black);
+        toolbarMenu.setBackground(steuerung.getUiColor(UiColor.bgDark));
         
         
         fonts.setPreferredSize(new Dimension(250, 30));
         fonts.setFont(new Font("Arial", Font.PLAIN, 15));
         fonts.addActionListener(e -> notizenSteuerung.updateFont(fonts));
+        fonts.setBackground(steuerung.getUiColor(UiColor.highlight));
+        fonts.setForeground(steuerung.getUiColor(UiColor.text));
 
         
         fontSizes.setPreferredSize(new Dimension(50, 30));
         fontSizes.setEditable(true);
         fontSizes.addActionListener(e -> notizenSteuerung.updateFontSize(fontSizes));
+        fontSizes.setBackground(steuerung.getUiColor(UiColor.highlight));
         
         toolbarMenu.add(fonts);
         toolbarMenu.add(fontSizes);
+        toolbarMenu.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        JPanel formattingButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        formattingButtonPanel.setOpaque(false);
+
         for (int i = 0; i < textFormattingNames.length; i++) {
-            toolbarMenu.add(createTextFormattingButton(textFormattingNames[i], i));
+            createTextFormattingButton(formattingButtonPanel, textFormattingNames[i], i);
         }
+        toolbarMenu.add(formattingButtonPanel);
         return toolbarMenu;
     }
 
-    private JPanel createTextFormattingButton(String name, int i) {
-        //WrapperPanel für den Button erzeugt um ein besseres Managment für den Layout zu haben
-        JPanel wrapperButton = new JPanel(); 
-        wrapperButton.setOpaque(false);
-        //wrapperButton.setBackground(Color.BLACK);
-
+    private void createTextFormattingButton(JPanel formattingButtonPanel, String name, int i) {
         textFormattingButtons[i] = new JToggleButton(name);
         textFormattingButtons[i].setName(name);
         textFormattingButtons[i].setPreferredSize(new Dimension(35,30));
-        textFormattingButtons[i].setBackground(Color.WHITE);
+        textFormattingButtons[i].setBackground(steuerung.getUiColor(UiColor.highlight));
         textFormattingButtons[i].addItemListener(e -> notizenSteuerung.textFormattingButtonsSteuerung(textFormattingButtons, textFormattingButtons[i], textPane));
 
-        wrapperButton.setMaximumSize(textFormattingButtons[i].getPreferredSize());
-        wrapperButton.add(textFormattingButtons[i]);
-
-        return wrapperButton;
+        formattingButtonPanel.add(textFormattingButtons[i]);
     }
 
-    private JPanel createMenuListPanel() {
-        JPanel textFieldPanel = new JPanel();
-        textFieldPanel.setBackground(Color.GRAY);
-
-        textPane.setPreferredSize(new Dimension(800, 300));
-        textPane.setBackground(new Color(230, 230, 230));
+    private JScrollPane createMenuListPanel() {
+        textPane.setBackground(steuerung.getUiColor(UiColor.bgLight));
         textPane.addCaretListener(e -> notizenSteuerung.carretListener(textPane, textFormattingButtons));
+        textPane.setForeground(steuerung.getUiColor(UiColor.text));
 
-        textFieldPanel.add(textPane);
-        return textFieldPanel;
+        JScrollPane scrollPane = new JScrollPane(textPane);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setBackground(steuerung.getUiColor(UiColor.bgLight));
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
     
 
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(Color.WHITE);
+        sidePanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
         sidePanel.setPreferredSize(new Dimension(50, appFrame.getSize().height));
         return sidePanel;
     }

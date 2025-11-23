@@ -4,8 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import Config.ColorData;
+import Config.ConfigSteuerung;
 import Dialog.*;
 import Enums.Theme;
+import Enums.UiColor;
 import Interface.TodoListController;
 import TodoItem.*;
 import UI.*;
@@ -16,11 +19,15 @@ public class Steuerung {
     private AppFrame appFrame;
     private FolderManager folderManager;
     private FileManager fileManager;
+    private ConfigSteuerung configSteuerung;
 
     public Steuerung() {
+        this.configSteuerung = new ConfigSteuerung(this);
+
         this.folderManager = new FolderManager(this);
         this.appFrame = new AppFrame(this, folderManager);
         this.fileManager = new FileManager(this, appFrame, folderManager);
+        
         
         fileManager.openSaveFile();
     }
@@ -32,17 +39,54 @@ public class Steuerung {
         new TodoItemDialog(this, appFrame, todoItemClass);
     }
 
-    public Color getPanelBackgroundColor(int order) {
-        if (currentTheme == Theme.DarkMode) {
-            switch (order) {
-                case 0:
-                    return new Color(50, 50, 50);
+    public Color getUiColor(UiColor names) {
+        ColorData colorData = configSteuerung.getColorData();
+        switch (names) {
+            case bgDark:
+                return new Color(colorData.getBgDark());
 
-                default:
-                    return Color.WHITE;
-            }
+            case bg:
+                return new Color(colorData.getBg());
+
+            case bgLight:
+                return new Color(colorData.getBgLight());
+            
+            case text:
+                return new Color(colorData.getText());
+            
+            case textMuted:
+                return new Color(colorData.getTextMuted());
+            
+            case highlight:
+                return new Color(colorData.getHighlight());
+            
+            case border:
+                return new Color(colorData.getBorder());
+            
+            case borderMuted:
+                return new Color(colorData.getBorderMuted());
+            
+            case primary:
+                return new Color(colorData.getPrimary());
+            
+            case secondary:
+                return new Color(colorData.getSecondary());
+            
+            case danger:
+                return new Color(colorData.getDanger());
+            
+            case warning:
+                return new Color(colorData.getWarning());
+            
+            case success:
+                return new Color(colorData.getSuccess());
+            
+            case info:
+                return new Color(colorData.getInfo());
+
+            default: 
+                throw new IllegalArgumentException("Unknown color name: " + names);
         }
-        return null;
     }
 
     public void createNotizen(String name, JDialog dialog, TodoListController todoListClass) {
@@ -70,7 +114,6 @@ public class Steuerung {
         todoListClass.addTodoItem(notizenSteuerung);
     }
     
-
     public void createOrdner(String name, Color ordnerFarbe, JDialog dialog, TodoListController todoListClass) {
         if(name.equals("")) {
             name = "Unbennant";
@@ -100,12 +143,12 @@ public class Steuerung {
         new ChangeOrdnerProperties(this, appFrame, ordner);
     }
 
-    public void nextMenuPanel(JPanel panel) {
-        folderManager.next(panel);
+    public void nextMenuPanel(JPanel nextPanel) {
+        folderManager.next(nextPanel);
     }
 
-    public void previousMenuPanel(JPanel panel) {
-        folderManager.back(panel);
+    public void previousMenuPanel(JPanel currentPanel) {
+        folderManager.back(currentPanel);
     }
 
     public ImageIcon setOrdnerIcon(Color color, int size) {
@@ -168,6 +211,10 @@ public class Steuerung {
 
     public void openSaveFile() {
         fileManager.openSaveFile();
+    }
+
+    public void openConfig() {
+        folderManager.next(configSteuerung.openConfigFrame());
     }
     
 }

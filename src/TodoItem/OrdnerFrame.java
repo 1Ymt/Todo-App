@@ -1,6 +1,11 @@
 package TodoItem;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
+import Enums.UiColor;
+import Steuerung.Steuerung;
 import UI.AppFrame;
 
 /*
@@ -40,13 +45,15 @@ import UI.AppFrame;
 
 public class OrdnerFrame {
 
+    private Steuerung steuerung;
     private OrdnerSteuerung ordnerSteuerung;
     private AppFrame appFrame;
     
     private Color ordnerFarbe;
     private JPanel menuList;
 
-    public OrdnerFrame(OrdnerSteuerung ordnerSteuerung, AppFrame appFrame, Color farbe) {
+    public OrdnerFrame(Steuerung steuerung, OrdnerSteuerung ordnerSteuerung, AppFrame appFrame, Color farbe) {
+        this.steuerung = steuerung;
         this.ordnerSteuerung = ordnerSteuerung;
         this.appFrame = appFrame;
 
@@ -61,13 +68,14 @@ public class OrdnerFrame {
      */
     public JPanel getDisplayPanel() {
         JPanel orderPanel = new JPanel();
-        //orderPanel.setName(ordnerSteuerung.getName());    why name panel?
         orderPanel.setLayout(new FlowLayout());
         orderPanel.setPreferredSize(new Dimension(ordnerSteuerung.getParent().getMenuList().getWidth(), 60));
         orderPanel.setMaximumSize(new Dimension(2000, 60));
-        orderPanel.setBackground(new Color(95, 111, 181));
+        orderPanel.setBackground(steuerung.getUiColor(UiColor.bgLight));
         orderPanel.addMouseListener(ordnerSteuerung.mouseClicked());
         orderPanel.setToolTipText(ordnerSteuerung.getName());
+        orderPanel.setBorder(BorderFactory.createRaisedBevelBorder());
+
         JPanel ordnerZeichen = new JPanel(new BorderLayout());
         ordnerZeichen.setPreferredSize(new Dimension(45,45));
         ordnerZeichen.setOpaque(false);
@@ -79,7 +87,8 @@ public class OrdnerFrame {
 
         JLabel ordnerName = new JLabel(ordnerSteuerung.getName());
         ordnerName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 15));
-        ordnerName.setPreferredSize(new Dimension(200,40));
+        ordnerName.setPreferredSize(new Dimension(200, 40));
+        ordnerName.setBackground(steuerung.getUiColor(UiColor.text));
 
         ordnerZeichen.add(ordnerIcon, BorderLayout.CENTER);
 
@@ -109,14 +118,14 @@ public class OrdnerFrame {
 
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(Color.WHITE);
+        sidePanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
         sidePanel.setPreferredSize(new Dimension(50, appFrame.getSize().height));
         return sidePanel;
     }
 
     private JPanel createMenuListPanel() {
         menuList.setName("MenuList");
-        menuList.setBackground(new Color(110, 128, 210));
+        menuList.setBackground(steuerung.getUiColor(UiColor.bg));
         menuList.setLayout(new BoxLayout(menuList, BoxLayout.Y_AXIS));
         return menuList;
     }
@@ -138,27 +147,28 @@ public class OrdnerFrame {
 
         JLabel menuName = new JLabel(ordnerSteuerung.getName());
         menuName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 20));
+        menuName.setBackground(steuerung.getUiColor(UiColor.text));
 
         JPanel wrapperLabel = new JPanel();
-        wrapperLabel.setPreferredSize(menuName.getPreferredSize());
-        wrapperLabel.setBackground(Color.WHITE);
         wrapperLabel.add(menuName);
+        wrapperLabel.setBackground(steuerung.getUiColor(UiColor.bgDark));
 
         if (ordnerSteuerung.getParent() != null) {
             JButton backButton = new JButton("Back");
             backButton.setPreferredSize(new Dimension(30, 30));
             backButton.addActionListener(e -> ordnerSteuerung.previousPanel(ordnerMenuPanel()));
+            backButton.setBackground(steuerung.getUiColor(UiColor.primary));
 
             JPanel wrapperButton = new JPanel(new GridBagLayout());
             wrapperButton.setPreferredSize(new Dimension(45, 45));
-            wrapperButton.setBackground(Color.WHITE);
+            wrapperButton.setBackground(steuerung.getUiColor(UiColor.bgDark));
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.anchor = GridBagConstraints.CENTER;
             wrapperButton.add(backButton, gbc);
 
             JPanel balancePanel = new JPanel();
             balancePanel.setPreferredSize(wrapperButton.getPreferredSize());
-            balancePanel.setBackground(Color.WHITE);
+            balancePanel.setBackground(wrapperButton.getBackground());
 
             menuNamePanel.add(wrapperButton, BorderLayout.WEST);
             menuNamePanel.add(balancePanel, BorderLayout.EAST);
@@ -171,11 +181,14 @@ public class OrdnerFrame {
 
     private JPanel createTodoItemButtonPanel() {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
         buttonPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
-        JButton todoItemButton = new JButton("Neu");
+        JButton todoItemButton = new JButton("+");
         todoItemButton.addActionListener(e -> ordnerSteuerung.createNewTodoItem());
+        todoItemButton.setBackground(steuerung.getUiColor(UiColor.primary));
+        todoItemButton.setForeground(steuerung.getUiColor(UiColor.highlight));
+        todoItemButton.setFont(new Font("ARIAL_BOLD", Font.BOLD, 25));
 
         JPanel wrapperButton = new JPanel(new BorderLayout());
         wrapperButton.setPreferredSize(new Dimension(200, 40));
@@ -189,7 +202,7 @@ public class OrdnerFrame {
     public void setOrdnerFarbe(Color farbe) {
         ordnerFarbe = farbe;
     }
-    
+
     public JPanel getMenuList() {
         return menuList;
     }

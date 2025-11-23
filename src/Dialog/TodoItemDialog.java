@@ -7,8 +7,10 @@ import java.awt.FlowLayout;
 import java.awt.event.WindowEvent;
 
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 
 import Enums.TodoType;
+import Enums.UiColor;
 import Interface.TodoListController;
 import Steuerung.Steuerung;
 
@@ -50,18 +52,36 @@ public class TodoItemDialog extends JDialog{
      * Panel für das Wählen der Tasks per Button klick.
      */
     private JPanel createMainMenuListPanel() {
-        JPanel mainMenuList =  new JPanel();
-        mainMenuList.setLayout(new BoxLayout(mainMenuList, BoxLayout.Y_AXIS));
-        mainMenuList.setBackground(new Color(95, 111, 181));
+        JPanel mainMenu = new JPanel(new BorderLayout());
+        mainMenu.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, steuerung.getUiColor(UiColor.bgDark),
+                steuerung.getUiColor(UiColor.border)));
+        
+        mainMenu.add(createExamplePanel(), BorderLayout.EAST);
+        mainMenu.add(createTodoMenuPanel(), BorderLayout.CENTER);
+        return mainMenu;
+    }
+    
+    private JPanel createExamplePanel() {
+        JPanel examplePanel = new JPanel();
+        examplePanel.setBackground(steuerung.getUiColor(UiColor.bg));
+        examplePanel.setPreferredSize(new Dimension(150, this.getHeight()));
+        examplePanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, steuerung.getUiColor(UiColor.border)));
+        return examplePanel;
+    }
+    
+    private JPanel createTodoMenuPanel() {
+        JPanel todoMenuList = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        todoMenuList.setLayout(new BoxLayout(todoMenuList, BoxLayout.Y_AXIS));
+        todoMenuList.setBackground(steuerung.getUiColor(UiColor.bg));
 
         /*
          * sorgt dafür, dass wenn man mehr TodoItems hat als standard (3), 
          * dann soll ein Button mit dem Namen im Array (itemNames) erschaffen werden.
          */
         for (int i = 0; i < ITEMNAMES.length; i++) {
-            mainMenuList.add(createTodoItemButton(ITEMNAMES[i], i));
+            todoMenuList.add(createTodoItemButton(ITEMNAMES[i], i));
         }
-        return mainMenuList;
+        return todoMenuList;
     }
     
     /*
@@ -69,15 +89,17 @@ public class TodoItemDialog extends JDialog{
      */
     private JPanel createTodoItemButton(TodoType name, int i) {
         //WrapperPanel für den Button erzeugt um ein besseres Managment für den Layout zu haben
-        JPanel wrapperButton = new JPanel(new FlowLayout(FlowLayout.LEFT,  5, 5)); 
+        JPanel wrapperButton = new JPanel(); 
         wrapperButton.setOpaque(false);
-        wrapperButton.setAlignmentX(Component.LEFT_ALIGNMENT);  //Schiebt die Tasks Buttons nach links.
+        //wrapperButton.setAlignmentX(Component.LEFT_ALIGNMENT);  //Schiebt die Tasks Buttons nach links.
 
         allTodoItemsButton[i] = new JToggleButton(name.name());
         allTodoItemsButton[i].setName(name.name());
-        allTodoItemsButton[i].setPreferredSize(new Dimension(300,35));
-        allTodoItemsButton[i].setBackground(Color.WHITE);
+        allTodoItemsButton[i].setPreferredSize(new Dimension(280,35));
+        allTodoItemsButton[i].setBackground(steuerung.getUiColor(UiColor.bgLight));
         allTodoItemsButton[i].addItemListener(e -> allTodoItemsButtoListener(allTodoItemsButton[i])); //Lampda Expression
+        allTodoItemsButton[i].setForeground(steuerung.getUiColor(UiColor.text));
+        allTodoItemsButton[i].setBorder(BorderFactory.createMatteBorder(0, 0, 7, 2, steuerung.getUiColor(UiColor.border)));
 
         wrapperButton.setMaximumSize(allTodoItemsButton[i].getPreferredSize());
         wrapperButton.add(allTodoItemsButton[i]);
@@ -90,7 +112,7 @@ public class TodoItemDialog extends JDialog{
      */
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(Color.WHITE);
+        sidePanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
         sidePanel.setPreferredSize(new Dimension(20, this.getHeight()));
         return sidePanel;
     }
@@ -101,7 +123,7 @@ public class TodoItemDialog extends JDialog{
     private JPanel createConfirmPanelMenu() {
         JPanel confirmPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
         confirmPanel.setPreferredSize(new Dimension(this.getWidth(), 50));
-        confirmPanel.setBackground(Color.WHITE);
+        confirmPanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
 
         confirmPanel.add(createConfirmButtons("Bestätigt"));
         confirmPanel.add(createConfirmButtons("Abbrechen"));
@@ -118,6 +140,8 @@ public class TodoItemDialog extends JDialog{
         JButton button = new JButton(name);
         button.setName(name);
         button.addActionListener(e -> confirmButtonsListener(button));
+        button.setBackground(steuerung.getUiColor(UiColor.primary));
+        button.setForeground(steuerung.getUiColor(UiColor.highlight));
         
         wrapperButton.setPreferredSize(new Dimension(100, 30));
         wrapperButton.add(button, BorderLayout.CENTER);

@@ -1,0 +1,19 @@
+{
+  "colorData": {
+    "theme": "DarkMode",
+    "bgDark": 14345969,
+    "bg": 15135743,
+    "bgLight": 16777215,
+    "text": 2842,
+    "textMuted": 3623773,
+    "highlight": 16777215,
+    "border": 7177111,
+    "borderMuted": 9150902,
+    "primary": 609404,
+    "secondary": 6043904,
+    "danger": 8345939,
+    "warning": 7038275,
+    "success": 4877658,
+    "info": 5399424
+  }
+}

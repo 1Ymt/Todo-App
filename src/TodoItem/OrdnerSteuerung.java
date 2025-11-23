@@ -31,7 +31,7 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
         this.ordnerFarbe = farbe;
         this.steuerung = steuerung;
 
-        this.ordnerFrame = new OrdnerFrame(this, appFrame, farbe);
+        this.ordnerFrame = new OrdnerFrame(steuerung, this, appFrame, farbe);
         this.todoItems = new ArrayList<>();
     }
 
@@ -118,8 +118,7 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(ordnerFrame.ordnerMenuPanel());
-
+                    steuerung.nextMenuPanel(ordnerFrame.ordnerMenuPanel());                   
                 }else if(e.getButton() == MouseEvent.BUTTON3) {
                     steuerung.changeOrdnerProperties(ordner);
                 }
