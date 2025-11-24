@@ -3,7 +3,7 @@ package Dialog;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
-import Enums.UiColor;
+import Enums.UIColor;
 import Interface.TodoListController;
 
 import java.awt.*;
@@ -50,8 +50,8 @@ public class OrdnerDialog extends JDialog{
     private JPanel createMainMenuPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
-        mainPanel.setBackground(steuerung.getUiColor(UiColor.bg));
-        mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, steuerung.getUiColor(UiColor.bgDark), steuerung.getUiColor(UiColor.border)));
+        mainPanel.setBackground(steuerung.getUiColor(UIColor.bg));
+        mainPanel.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, steuerung.getUiColor(UIColor.bgDark), steuerung.getUiColor(UIColor.border)));
         
 
         mainPanel.add(createOrdnerVisual());
@@ -62,7 +62,7 @@ public class OrdnerDialog extends JDialog{
     
     private JPanel createOrdnerVisual() {
         JPanel ordnerBackgroundPanel = new JPanel();
-        ordnerBackgroundPanel.setBackground(steuerung.getUiColor(UiColor.bg));
+        ordnerBackgroundPanel.setBackground(steuerung.getUiColor(UIColor.bg));
         ordnerBackgroundPanel.setLayout(new GridBagLayout());
         
 
@@ -71,7 +71,7 @@ public class OrdnerDialog extends JDialog{
         
         JPanel ordnerPanel = new JPanel();
         ordnerPanel.setPreferredSize(new Dimension(150,120));
-        ordnerPanel.setBackground(steuerung.getUiColor(UiColor.bgLight));
+        ordnerPanel.setBackground(steuerung.getUiColor(UIColor.bgLight));
         ordnerPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 
         ordnerIcon = new JLabel(steuerung.setOrdnerIcon(choosenColor, 100));
@@ -84,15 +84,15 @@ public class OrdnerDialog extends JDialog{
     private JPanel createOrdnerConfigMenu() {
         JPanel createOrdnerConfigPanel = new JPanel();
         createOrdnerConfigPanel.setLayout(new BoxLayout(createOrdnerConfigPanel, BoxLayout.Y_AXIS));
-        createOrdnerConfigPanel.setBackground(steuerung.getUiColor(UiColor.bg));
+        createOrdnerConfigPanel.setBackground(steuerung.getUiColor(UIColor.bg));
 
         JPanel wrapperJPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,  5, 5));
         wrapperJPanel.setOpaque(false);
 
         ordnerName = new JTextField(20);
         ordnerName.setPreferredSize(new Dimension(300, 35));
-        ordnerName.setBackground(steuerung.getUiColor(UiColor.bgLight));
-        ordnerName.setForeground(steuerung.getUiColor(UiColor.text));
+        ordnerName.setBackground(steuerung.getUiColor(UIColor.bgLight));
+        ordnerName.setForeground(steuerung.getUiColor(UIColor.text));
 
         wrapperJPanel.setMaximumSize(ordnerName.getPreferredSize());
         wrapperJPanel.add(ordnerName);
@@ -131,7 +131,7 @@ public class OrdnerDialog extends JDialog{
         
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
+        sidePanel.setBackground(steuerung.getUiColor(UIColor.bgDark));
         sidePanel.setPreferredSize(new Dimension(50, (int) this.getSize().getHeight()));
         return sidePanel;
     }
@@ -142,10 +142,10 @@ public class OrdnerDialog extends JDialog{
     private JPanel createConfirmPanelMenu() {
         JPanel confirmPanel =  new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
         confirmPanel.setPreferredSize(new Dimension(this.getWidth(), 50));
-        confirmPanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
+        confirmPanel.setBackground(steuerung.getUiColor(UIColor.bgDark));
 
-        confirmPanel.add(createConfirmButtons("Bestätigt"));
         confirmPanel.add(createConfirmButtons("Abbrechen"));
+        confirmPanel.add(createConfirmButtons("Bestätigt"));
 
         return confirmPanel;
     }
@@ -160,8 +160,12 @@ public class OrdnerDialog extends JDialog{
         JButton button = new JButton(name);
         button.setName(name);
         button.setPreferredSize(new Dimension(100, 30));
-        button.setBackground(steuerung.getUiColor(UiColor.primary));
-        button.setForeground(steuerung.getUiColor(UiColor.highlight));
+        if (name.equals("Bestätigt")) {
+            button.setBackground(steuerung.getUiColor(UIColor.primary));
+        } else {
+            button.setBackground(steuerung.getUiColor(UIColor.info));
+        }
+        button.setForeground(steuerung.getUiColor(UIColor.highlight));
         button.addActionListener(e -> confirmButtonsListener(button));
         
         wrapperButton.setMaximumSize(button.getPreferredSize());

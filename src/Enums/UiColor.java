@@ -1,6 +1,6 @@
 package Enums;
 
-public enum UiColor {
+public enum UIColor {
     bgDark,
     bg,
     bgLight,
