@@ -33,6 +33,7 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
 
         this.ordnerFrame = new OrdnerFrame(steuerung, this, appFrame, farbe);
         this.todoItems = new ArrayList<>();
+        System.out.println(name + ": " + getAllOrdnerPath());
     }
 
     @Override
@@ -70,6 +71,11 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
     }
 
     @Override
+    public TodoListController getTodoParent() {
+        return getParent();
+    }
+
+    @Override
     public TodoData toData() {
         OrdnerData data = new OrdnerData();
 
@@ -86,6 +92,17 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
     @Override
     public JPanel display() {
         return ordnerFrame.getDisplayPanel();
+    }
+
+    public String getAllOrdnerPath() {
+        String path = getName() + "\\";
+        TodoListController parent = getParent();
+        while (parent != null) {
+            path = parent.getParentName() + "\\" + path;
+            parent = parent.getTodoParent();
+        }
+        path = "C:" + path;
+        return path;
     }
 
     public void setOrdnerFarbe(Color farbe) {
@@ -105,11 +122,11 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
     }
 
     public void createNewTodoItem() {
-        steuerung.createNeueTodoItemMainMenu(this);
+        steuerung.openTodoItemCreation(this);
     }
 
     public JPanel getMenuPanel() {
-        return ordnerFrame.ordnerMenuPanel();
+        return ordnerFrame.menuPanel();
     }
 
     @Override
@@ -118,7 +135,7 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(ordnerFrame.ordnerMenuPanel());                   
+                    steuerung.nextMenuPanel(ordnerFrame.menuPanel());                   
                 }else if(e.getButton() == MouseEvent.BUTTON3) {
                     steuerung.changeOrdnerProperties(ordner);
                 }
@@ -126,5 +143,4 @@ public class OrdnerSteuerung extends TodoItem implements TodoListController {
         };
             return ml;
         }
-
 }
