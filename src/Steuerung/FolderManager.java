@@ -26,6 +26,10 @@ public class FolderManager extends JPanel{
     public void next(JPanel panel) {
         this.add(panel);
         ordnerArray.add(panel);
+
+        this.revalidate();
+        this.repaint();
+
         cardLayout.next(this);
     }
 
@@ -34,5 +38,7 @@ public class FolderManager extends JPanel{
         int lastIndex = ordnerArray.size() - 1;
         this.remove(ordnerArray.get(lastIndex));
         ordnerArray.remove(lastIndex);
+        this.revalidate();
+        this.repaint();
     }
 }

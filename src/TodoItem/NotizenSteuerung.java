@@ -1,7 +1,5 @@
 package TodoItem;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
@@ -30,7 +28,6 @@ import Data.NotizenData;
 import Data.SegmentData;
 import Data.TodoData;
 import Enums.TodoType;
-import Enums.UiColor;
 import Interface.TodoListController;
 import Steuerung.Steuerung;
 import UI.AppFrame;
@@ -49,7 +46,7 @@ public class NotizenSteuerung extends TodoItem {
     public NotizenSteuerung(Steuerung steuerung, AppFrame appFrame, String name, TodoListController parent) {
         super(name, TodoType.Notizen, parent);
         this.steuerung = steuerung;
-        this.notizenFrame = new NotizenFrame(steuerung,this, appFrame);
+        this.notizenFrame = new NotizenFrame(steuerung, this, appFrame);
         
         StyledEditorKit kit = (StyledEditorKit) notizenFrame.getTextPaneEditorKit();
         this.attributeStyle = kit.getInputAttributes();
@@ -136,12 +133,13 @@ public class NotizenSteuerung extends TodoItem {
             JOptionPane.showMessageDialog(notizenFrame.getDisplayPanel(),
                     "Bitte geben Sie eine gültige Schriftgröße ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
             comboBoxFontSize.setSelectedItem(FONTSIZE[5]);
+            comboBoxFontSize.setFocusable(false);
             return;
         }
 
         int fontSize = Integer.parseInt(comboBoxFontSize.getSelectedItem().toString());
         StyleConstants.setFontSize(attributeStyle, fontSize);
-        System.out.println(fontSize);
+        comboBoxFontSize.setFocusable(false);
     }
 
     public void textFormattingButtonsSteuerung(JToggleButton[] buttons, JToggleButton button, JTextPane textPane) {
@@ -313,7 +311,7 @@ public class NotizenSteuerung extends TodoItem {
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(notizenFrame.notizMenuPanel());
+                    steuerung.nextMenuPanel(notizenFrame.menuPanel());
                 }else if(e.getButton() == MouseEvent.BUTTON3) {
                 
                 }

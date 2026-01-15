@@ -6,11 +6,11 @@ import javax.swing.*;
 import javax.swing.text.EditorKit;
 import javax.swing.text.StyledDocument;
 
-import Enums.UiColor;
+import Enums.UIColor;
 import Steuerung.Steuerung;
 import UI.AppFrame;
 
-public class NotizenFrame {
+public class NotizenFrame extends TodoFrame{
 
     private Steuerung steuerung;
     private NotizenSteuerung notizenSteuerung;
@@ -36,11 +36,12 @@ public class NotizenFrame {
         this.fontSizes = new JComboBox<Integer>(notizenSteuerung.getFontSizes());
     }
 
+    @Override
     public JPanel getDisplayPanel() {
         JPanel notizenPanel = new JPanel();
         notizenPanel.setLayout(new FlowLayout());
         notizenPanel.setMaximumSize(new Dimension(appFrame.getWidth(), 60));
-        notizenPanel.setBackground(steuerung.getUiColor(UiColor.bgLight));
+        notizenPanel.setBackground(steuerung.getUiColor(UIColor.bgLight));
         notizenPanel.addMouseListener(notizenSteuerung.mouseClicked());
         notizenPanel.setToolTipText(notizenSteuerung.getName());
         notizenPanel.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -57,7 +58,7 @@ public class NotizenFrame {
         JLabel notizenName = new JLabel(notizenSteuerung.getName());
         notizenName.setFont(new Font("ARIAL_BOLD", Font.BOLD, 15));
         notizenName.setPreferredSize(new Dimension(200, 40));
-        notizenName.setBackground(steuerung.getUiColor(UiColor.text));
+        notizenName.setBackground(steuerung.getUiColor(UIColor.text));
 
         ordnerZeichen.add(notizenIcon, BorderLayout.CENTER);
 
@@ -69,7 +70,8 @@ public class NotizenFrame {
         return notizenPanel;
     }
     
-    public JPanel notizMenuPanel() {
+    @Override
+    public JPanel menuPanel() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
         
@@ -84,7 +86,7 @@ public class NotizenFrame {
     private JPanel createTopMenuPanel() {
         JPanel topPanel = new JPanel();
         topPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 90));
-        topPanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
+        topPanel.setBackground(steuerung.getUiColor(UIColor.bgDark));
 
         topPanel.add(createToolbarMenuPanel());
 
@@ -93,20 +95,20 @@ public class NotizenFrame {
     
     private JPanel createToolbarMenuPanel() {
         JPanel toolbarMenu = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        toolbarMenu.setBackground(steuerung.getUiColor(UiColor.bgDark));
+        toolbarMenu.setBackground(steuerung.getUiColor(UIColor.bgDark));
         
         
         fonts.setPreferredSize(new Dimension(250, 30));
         fonts.setFont(new Font("Arial", Font.PLAIN, 15));
         fonts.addActionListener(e -> notizenSteuerung.updateFont(fonts));
-        fonts.setBackground(steuerung.getUiColor(UiColor.highlight));
-        fonts.setForeground(steuerung.getUiColor(UiColor.text));
+        fonts.setBackground(steuerung.getUiColor(UIColor.highlight));
+        fonts.setForeground(steuerung.getUiColor(UIColor.text));
 
         
         fontSizes.setPreferredSize(new Dimension(50, 30));
         fontSizes.setEditable(true);
         fontSizes.addActionListener(e -> notizenSteuerung.updateFontSize(fontSizes));
-        fontSizes.setBackground(steuerung.getUiColor(UiColor.highlight));
+        fontSizes.setBackground(steuerung.getUiColor(UIColor.highlight));
         
         toolbarMenu.add(fonts);
         toolbarMenu.add(fontSizes);
@@ -126,21 +128,21 @@ public class NotizenFrame {
         textFormattingButtons[i] = new JToggleButton(name);
         textFormattingButtons[i].setName(name);
         textFormattingButtons[i].setPreferredSize(new Dimension(35,30));
-        textFormattingButtons[i].setBackground(steuerung.getUiColor(UiColor.highlight));
+        textFormattingButtons[i].setBackground(steuerung.getUiColor(UIColor.highlight));
         textFormattingButtons[i].addItemListener(e -> notizenSteuerung.textFormattingButtonsSteuerung(textFormattingButtons, textFormattingButtons[i], textPane));
 
         formattingButtonPanel.add(textFormattingButtons[i]);
     }
 
     private JScrollPane createMenuListPanel() {
-        textPane.setBackground(steuerung.getUiColor(UiColor.bgLight));
+        textPane.setBackground(steuerung.getUiColor(UIColor.bgLight));
         textPane.addCaretListener(e -> notizenSteuerung.carretListener(textPane, textFormattingButtons));
-        textPane.setForeground(steuerung.getUiColor(UiColor.text));
+        textPane.setForeground(steuerung.getUiColor(UIColor.text));
 
         JScrollPane scrollPane = new JScrollPane(textPane);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getVerticalScrollBar().setBackground(steuerung.getUiColor(UiColor.bgLight));
+        scrollPane.getVerticalScrollBar().setBackground(steuerung.getUiColor(UIColor.bgLight));
         scrollPane.setBorder(null);
         return scrollPane;
     }
@@ -148,7 +150,7 @@ public class NotizenFrame {
 
     private JPanel createSidePanel() {
         JPanel sidePanel = new JPanel();
-        sidePanel.setBackground(steuerung.getUiColor(UiColor.bgDark));
+        sidePanel.setBackground(steuerung.getUiColor(UIColor.bgDark));
         sidePanel.setPreferredSize(new Dimension(50, appFrame.getSize().height));
         return sidePanel;
     }

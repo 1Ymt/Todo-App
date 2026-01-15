@@ -7,15 +7,14 @@ import javax.swing.*;
 import Config.ColorData;
 import Config.ConfigSteuerung;
 import Dialog.*;
-import Enums.Theme;
-import Enums.UiColor;
+import Enums.UIColor;
 import Interface.TodoListController;
+import Speicherung.FileManager;
 import TodoItem.*;
 import UI.*;
 
 public class Steuerung {
-    private Theme currentTheme = Theme.DarkMode;
-
+    
     private AppFrame appFrame;
     private FolderManager folderManager;
     private FileManager fileManager;
@@ -30,16 +29,17 @@ public class Steuerung {
         
         
         fileManager.openSaveFile();
+        //openConfig();
     }
 
     /*
      * Wenn man eine neue TodoItem erstellt, wird diese Method aufgerufen, um die TodoItemDialog zu zeigen.
      */
-    public void createNeueTodoItemMainMenu(TodoListController todoItemClass) {
-        new TodoItemDialog(this, appFrame, todoItemClass);
+    public void openTodoItemCreation(TodoListController parentClass) {
+        new TodoItemDialog(this, appFrame, parentClass);
     }
 
-    public Color getUiColor(UiColor names) {
+    public Color getUiColor(UIColor names) {
         ColorData colorData = configSteuerung.getColorData();
         switch (names) {
             case bgDark:
@@ -88,46 +88,71 @@ public class Steuerung {
                 throw new IllegalArgumentException("Unknown color name: " + names);
         }
     }
-
-    public void createNotizen(String name, JDialog dialog, TodoListController todoListClass) {
-        if(name.equals("")) {
-            name = "Unbennantes Notiz";
+    
+    public void createOrdner(String name, Color ordnerFarbe, JDialog dialog, TodoListController todoListClass) {
+        if (name.equals("")) {
+            name = "Unbennant";
             int index = 1;
 
             for (TodoItem todoItem : todoListClass.getTodoItems().reversed()) {
-                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
-                    name = "Unbennant Notiz" +  " (" + index + ")";
+                if (todoItem.isOrdner() && todoItem.getName().equals(name)) {
+                    name = "Unbennant" + " (" + index + ")";
                     index++;
                 }
             }
-        }else {
+        } else {
             for (TodoItem todoItem : todoListClass.getTodoItems()) {
-                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
+                if (todoItem.isOrdner() && todoItem.getName().equals(name)) {
                     JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
                     return;
                 }
             }
         }
-        
+
+        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+        OrdnerSteuerung ordnerSteuerung = new OrdnerSteuerung(this, appFrame, name, todoListClass, ordnerFarbe);
+        todoListClass.addTodoItem(ordnerSteuerung);
+    }
+    
+    public void createNotizen(String name, JDialog dialog, TodoListController todoListClass) {
+        if (name.equals("")) {
+            name = "Unbennantes Notiz";
+            int index = 1;
+
+            for (TodoItem todoItem : todoListClass.getTodoItems().reversed()) {
+                if (todoItem.isTask() && todoItem.getName().equals(name)) {
+                    name = "Unbennant Notiz" + " (" + index + ")";
+                    index++;
+                }
+            }
+        } else {
+            for (TodoItem todoItem : todoListClass.getTodoItems()) {
+                if (todoItem.isTask() && todoItem.getName().equals(name)) {
+                    JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
+                    return;
+                }
+            }
+        }
+
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
         NotizenSteuerung notizenSteuerung = new NotizenSteuerung(this, appFrame, name, todoListClass);
         todoListClass.addTodoItem(notizenSteuerung);
     }
     
-    public void createOrdner(String name, Color ordnerFarbe, JDialog dialog, TodoListController todoListClass) {
+    public void createTask(String name, JDialog dialog, TodoListController todoListClass) {
         if(name.equals("")) {
-            name = "Unbennant";
+            name = "Unbennantes Task";
             int index = 1;
 
             for (TodoItem todoItem : todoListClass.getTodoItems().reversed()) {
-                if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
-                    name = "Unbennant" +  " (" + index + ")";
+                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
+                    name = "Unbennant Task" +  " (" + index + ")";
                     index++;
                 }
             }
         }else {
             for (TodoItem todoItem : todoListClass.getTodoItems()) {
-                if(todoItem.isOrdner() && todoItem.getName().equals(name)) {
+                if(todoItem.isNotizen() && todoItem.getName().equals(name)) {
                     JOptionPane.showMessageDialog(dialog, "Name bereits vergeben.");
                     return;
                 }
@@ -135,8 +160,9 @@ public class Steuerung {
         }
         
         dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
-        OrdnerSteuerung ordnerSteuerung = new OrdnerSteuerung(this, appFrame, name, todoListClass, ordnerFarbe);
-        todoListClass.addTodoItem(ordnerSteuerung);
+        
+        TaskSteuerung taskSteuerung = new TaskSteuerung(this, appFrame, name, todoListClass);
+        todoListClass.addTodoItem(taskSteuerung);
     }
 
     public void changeOrdnerProperties(OrdnerSteuerung ordner) {
@@ -214,7 +240,7 @@ public class Steuerung {
     }
 
     public void openConfig() {
-        folderManager.next(configSteuerung.openConfigFrame());
+        folderManager.next(configSteuerung.openConfigFrame(appFrame));
     }
     
 }
