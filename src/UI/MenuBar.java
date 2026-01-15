@@ -4,7 +4,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import Enums.UiColor;
+import Enums.UIColor;
 import Steuerung.Steuerung;
 
 public class MenuBar extends JMenuBar{
@@ -13,7 +13,7 @@ public class MenuBar extends JMenuBar{
     MenuBar(Steuerung steuerung, AppFrame appFrame) {
         this.steuerung = steuerung;
 
-        this.setBackground(steuerung.getUiColor(UiColor.bgLight));
+        this.setBackground(steuerung.getUiColor(UIColor.bgLight));
         this.add(saving());
         this.add(config());
     }
