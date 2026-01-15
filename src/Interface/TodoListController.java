@@ -12,5 +12,8 @@ public interface TodoListController {
     void addTodoItem(TodoItem todoItem);
 
     void updateMenuList();
+
     String getParentName();
+
+    TodoListController getTodoParent();
 }
