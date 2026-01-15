@@ -219,8 +219,17 @@ public class ChangeOrdnerProperties extends JDialog{
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }
+
     private void deleteButtonConfirmation() {
-        int option = JOptionPane.showConfirmDialog(this, "Willst du wirklich diesen Ordner löschen?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        int option = -1;
+        if (ordner.getTodoItems().isEmpty()) {
+            option = JOptionPane.showConfirmDialog(this, "Willst du wirklich diesen Ordner löschen?","Confirmation", JOptionPane.YES_NO_OPTION);
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        } else {
+            option = JOptionPane.showConfirmDialog(this,
+                    "Es gibt noch Inhalte in diesem Ordner. Wenn du diesen Ordner Löscht,\nwerden alle Inhalte verloren gehen. Trotzdem Löschen?",
+                    "Confirmation", JOptionPane.YES_NO_OPTION);
+        }
         
         if (option == JOptionPane.YES_OPTION) {
             TodoListController parent = ordner.getParent();
