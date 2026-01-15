@@ -22,13 +22,12 @@ public class TodoItemDialog extends JDialog{
     private JToggleButton[] allTodoItemsButton;
     private String taskAuswahl;
 
-    public TodoItemDialog(Steuerung steuerung, JFrame appFrame, TodoListController todoItemClass) {
+    public TodoItemDialog(Steuerung steuerung, JFrame appFrame, TodoListController parentClass) {
         super(appFrame, "Neu", true); //modal: "true" - sodass man nicht auf das andere Fenster klicken kann
         this.steuerung = steuerung;
         this.appFrame = appFrame;
-        this.todoItemClass = todoItemClass;
+        this.todoItemClass = parentClass;
 
-        
 
         this.allTodoItemsButton = new JToggleButton[ITEMNAMES.length];
         this.taskAuswahl = "";
@@ -199,10 +198,11 @@ public class TodoItemDialog extends JDialog{
                         break;
                     case Ordner:
                         new OrdnerDialog(steuerung, appFrame, todoItemClass);
+                        System.out.println("Ordner");
                         break;
                     case Task:
                         System.out.println("Task");
-                        //new Task(taskAuswahl, taskAuswahl, todoItemClass, steuerung, null)
+                        steuerung.createTask("", this, todoItemClass);
                         break;
                     default:
                         throw new IllegalArgumentException("No Method named: " + taskAuswahl);
