@@ -1,4 +1,4 @@
-package Steuerung;
+package Speicherung;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -26,10 +26,7 @@ public class TodoDataSerializer implements JsonSerializer<TodoData>{
                 obj.addProperty("name", ordnerData.getName());
                 obj.addProperty("colorRGB", ordnerData.getColorRGB());
 
-                JsonElement childrenOrdner = context.serialize(
-                        ordnerData.getTodoData(),
-                        new TypeToken<List<TodoData>>() {}.getType()
-                );
+                JsonElement childrenOrdner = context.serialize(ordnerData.getTodoData(), new TypeToken<List<TodoData>>() {}.getType());
                 obj.add("todoData", childrenOrdner);
                 return obj;
 
@@ -38,10 +35,7 @@ public class TodoDataSerializer implements JsonSerializer<TodoData>{
                 obj.addProperty("type", notizenData.getType().name());
                 obj.addProperty("name", notizenData.getName());
 
-                JsonElement segments = context.serialize(
-                        notizenData.getSegments(),
-                        new TypeToken<List<SegmentData>>() {}.getType()
-                );
+                JsonElement segments = context.serialize(notizenData.getSegments(),new TypeToken<List<SegmentData>>() {}.getType());
                 obj.add("segments", segments);
                 return obj;
 

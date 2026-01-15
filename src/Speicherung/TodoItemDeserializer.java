@@ -1,4 +1,4 @@
-package Steuerung;
+package Speicherung;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

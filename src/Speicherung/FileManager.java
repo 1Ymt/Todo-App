@@ -1,4 +1,4 @@
-package Steuerung;
+package Speicherung;
 
 import java.awt.Color;
 import java.io.File;
@@ -17,6 +17,8 @@ import Data.OrdnerData;
 import Data.TodoData;
 import Enums.TodoType;
 import Interface.TodoListController;
+import Steuerung.FolderManager;
+import Steuerung.Steuerung;
 import TodoItem.NotizenSteuerung;
 import TodoItem.OrdnerSteuerung;
 import UI.AppFrame;
