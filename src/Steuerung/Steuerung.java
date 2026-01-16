@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import Config.ColorData;
+import Config.ConfigFrame;
 import Config.ConfigSteuerung;
 import Dialog.*;
 import Enums.UIColor;
@@ -21,10 +22,9 @@ public class Steuerung {
     private ConfigSteuerung configSteuerung;
 
     public Steuerung() {
-        this.configSteuerung = new ConfigSteuerung(this);
-
         this.folderManager = new FolderManager(this);
         this.appFrame = new AppFrame(this, folderManager);
+        this.configSteuerung = new ConfigSteuerung(this, appFrame);
         this.fileManager = new FileManager(this, appFrame, folderManager);
         
         
@@ -169,12 +169,16 @@ public class Steuerung {
         new ChangeOrdnerProperties(this, appFrame, ordner);
     }
 
-    public void nextMenuPanel(JPanel nextPanel) {
-        folderManager.next(nextPanel);
+    public void nextMenuPanel(String name, JPanel nextPanel) {
+        folderManager.next(name, nextPanel);
     }
 
-    public void previousMenuPanel(JPanel currentPanel) {
-        folderManager.back(currentPanel);
+    public void previousMenuPanel() {
+        folderManager.back();
+    }
+
+    public void firstMenuPanel() {
+        folderManager.firstMenuPanel();
     }
 
     public ImageIcon setOrdnerIcon(Color color, int size) {
@@ -240,7 +244,16 @@ public class Steuerung {
     }
 
     public void openConfig() {
-        folderManager.next(configSteuerung.openConfigFrame(appFrame));
+        JPanel configFrame = configSteuerung.openConfigFrame();
+        folderManager.next("config", configFrame);
+    }
+
+    public void reloadFile() {
+        fileManager.reloadFile();
+    }
+
+    public void reloadPanel(JPanel panel) {
+        folderManager.reloadPanel(panel);
     }
     
 }
