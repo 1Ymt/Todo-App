@@ -2,11 +2,13 @@ package Config;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 
 import Enums.Theme;
 import Enums.UIColor;
@@ -36,7 +39,6 @@ public class ConfigFrame extends JPanel {
         this.steuerung = steuerung;
         this.configSteuerung = configSteuerung;
         this.appFrame = appFrame;
-
         initializeFrame();
         createPanels();
     }
@@ -172,6 +174,7 @@ public class ConfigFrame extends JPanel {
         themePanel.setBackground(steuerung.getUiColor(panelColor));
         themePanel.setForeground(steuerung.getUiColor(normalTextColor));
         themePanel.setSelectedItem(configSteuerung.getColorData().getTheme());
+        themePanel.addActionListener(e-> configSteuerung.changeTheme(themePanel));
 
         JPanel wrapperButton = new JPanel(new GridBagLayout());
         wrapperButton.setPreferredSize(new Dimension(100, 45));
@@ -191,6 +194,7 @@ public class ConfigFrame extends JPanel {
         colorButton.setPreferredSize(new Dimension(30, 30));
         colorButton.setBackground(steuerung.getUiColor(uiColor));
         colorButton.setBorder(BorderFactory.createMatteBorder(1, 1, 2, 2, steuerung.getUiColor(UIColor.border)));
+        colorButton.addActionListener(e -> configSteuerung.changeUIColor(colorButton, name));
 
         JPanel wrapperButton = new JPanel(new GridBagLayout());
         wrapperButton.setPreferredSize(new Dimension(45, 45));
@@ -232,7 +236,31 @@ public class ConfigFrame extends JPanel {
         JLabel label = createHeading(headingName, panelColor, headingTextColor, new Font("Arial", Font.BOLD, 17));
         label.setBackground(Color.black);
         label.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15)); // left padding 
+        
+        //Default Button
+        JButton defaultButton = new JButton("Default");
+        defaultButton.setPreferredSize(new Dimension(60, 30));
+        defaultButton.setBackground(steuerung.getUiColor(UIColor.secondary));
+        defaultButton.setBorder(BorderFactory.createMatteBorder(1, 1, 2, 2, steuerung.getUiColor(UIColor.border)));
+        defaultButton.setForeground(steuerung.getUiColor(UIColor.highlight));
+        defaultButton.addActionListener(e -> configSteuerung.resetUIColor());
+
+        JPanel wrapperButton = new JPanel(new GridBagLayout());
+        wrapperButton.setMaximumSize(defaultButton.getPreferredSize());
+        wrapperButton.setBackground(steuerung.getUiColor(panelColor));
+        wrapperButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 15)); // right padding 
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        wrapperButton.add(defaultButton, gbc);
+
+        JPanel buttonPanel = new JPanel(new BorderLayout());
+        buttonPanel.setBackground(steuerung.getUiColor(panelColor));
+        buttonPanel.add(wrapperButton, BorderLayout.CENTER);
+        
+        headingPanel.add(buttonPanel, BorderLayout.EAST);
         headingPanel.add(label, BorderLayout.WEST);
+
 
         sectionPanel.add(headingPanel);
 
@@ -283,8 +311,13 @@ public class ConfigFrame extends JPanel {
     private JSeparator createSeparator() {
         JSeparator s = new JSeparator();
         s.setOrientation(SwingConstants.HORIZONTAL);
+
+        //Sodass der Separator in der Mitte ist
         s.setMaximumSize(new Dimension(800, 5));
+        s.setMinimumSize(new Dimension(800, 5));
+
         s.setBackground(steuerung.getUiColor(UIColor.border));
+        s.setAlignmentX(Component.CENTER_ALIGNMENT);
         return s;
     }
 }
