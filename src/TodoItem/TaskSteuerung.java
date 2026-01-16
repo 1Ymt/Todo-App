@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Data.TaskData;
+import Data.TaskSegmentData;
 import Data.TodoData;
 import Dialog.TaskSegmentDialog;
 import Enums.TodoType;
@@ -58,6 +59,13 @@ public class TaskSteuerung extends TodoItem {
         data.setName(getName());
         data.setType(getType());
 
+        for (TaskSegment taskSegment : taskSements) {
+            String titel = taskSegment.getTitel();
+            String beschreibung = taskSegment.getBeschreibung();
+
+            TaskSegmentData taskSegmentData = new TaskSegmentData(titel, beschreibung);
+            data.addTaskSegmentData(taskSegmentData);
+        }
         return data;
     }
 
@@ -71,14 +79,15 @@ public class TaskSteuerung extends TodoItem {
     }
 
     public void openNewTaskSegment() {
-        new TaskSegment(steuerung, appFrame, this);
+        TaskSegment taskSegment = new TaskSegment(steuerung, appFrame, this);
+        taskSegment.showDialog(false);
     }
 
     public void createTaskSegment(TaskSegment taskSegment, TaskSegmentDialog taskSegmentDialog, boolean isEdit) {
-        if(taskSegment.getTitel().equals("")) {
+        if (taskSegment.getTitel().equals("")) {
             JOptionPane.showMessageDialog(taskSegmentDialog, "Bitte einen Namen eingeben.");
             return;
-        }else {
+        } else {
             for (TaskSegment task : taskSements) {
                 if (task.getTitel().equals(taskSegment.getTitel())) {
                     if (isEdit) {
@@ -98,7 +107,17 @@ public class TaskSteuerung extends TodoItem {
         }
         taskSegmentDialog.dispose();
         addTodoItem(taskSegment);
-
+    }
+    
+    public void setTaskSegmentDataToTaskSegments(ArrayList<TaskSegmentData> taskSegmentDatas) {
+        taskSements.clear();
+        for (TaskSegmentData taskSegmentData : taskSegmentDatas) {
+            TaskSegment taskSegment = new TaskSegment(steuerung, appFrame, this);
+            taskSegment.setTitel(taskSegmentData.getTitel());
+            taskSegment.setBeschreibung(taskSegmentData.getBeschreibung());
+            addTodoItem(taskSegment);
+        }
+        updateMenuList();
     }
 
     @Override

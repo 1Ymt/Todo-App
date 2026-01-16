@@ -1,0 +1,30 @@
+package Data;
+
+public class TaskSegmentData {
+    private String titel;
+    private String beschreibung;
+
+    public TaskSegmentData() {
+    }
+
+    public TaskSegmentData(String titel, String beschreibung) {
+        this.titel = titel;
+        this.beschreibung = beschreibung;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public void setTitel(String titel) {
+        this.titel = titel;
+    }
+
+    public String getBeschreibung() {
+        return beschreibung;
+    }
+
+    public void setBeschreibung(String beschreibung) {
+        this.beschreibung = beschreibung;
+    }
+}

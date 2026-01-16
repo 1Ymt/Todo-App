@@ -20,10 +20,10 @@ import Enums.TodoType;
 import Interface.TodoListController;
 import Steuerung.FolderManager;
 import Steuerung.Steuerung;
-import Testing.Task;
 import TodoItem.NotizenSteuerung;
 import TodoItem.OrdnerSteuerung;
 import TodoItem.TaskSteuerung;
+import Data.TaskSegmentData;
 import UI.AppFrame;
 
 public class FileManager {
@@ -98,12 +98,13 @@ public class FileManager {
                     NotizenData notizenData = (NotizenData) datas.get(i);
                     NotizenSteuerung notizen = new NotizenSteuerung(steuerung, appFrame, notizenData.getName(), parent);
                     parent.addTodoItem(notizen);
-                    notizen.setSegmentDataToStyledDocument(notizenData.getSegments());
+                    notizen.setFontSegmentDataToStyledDocument(notizenData.getSegments());
                     break;
                 case Task:
                     TaskData taskData = (TaskData) datas.get(i);
                     TaskSteuerung task = new TaskSteuerung(steuerung, appFrame, taskData.getName(), parent);
                     parent.addTodoItem(task);
+                    task.setTaskSegmentDataToTaskSegments(taskData.getTaskSegments());
                     break;
                 default:
                     throw new IllegalArgumentException("No TodoType " + dataType);

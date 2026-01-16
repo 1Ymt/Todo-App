@@ -11,8 +11,9 @@ import com.google.gson.reflect.TypeToken;
 
 import Data.NotizenData;
 import Data.OrdnerData;
-import Data.SegmentData;
+import Data.FontSegmentData;
 import Data.TaskData;
+import Data.TaskSegmentData;
 import Data.TodoData;
 
 public class TodoDataSerializer implements JsonSerializer<TodoData>{
@@ -36,14 +37,17 @@ public class TodoDataSerializer implements JsonSerializer<TodoData>{
                 obj.addProperty("type", notizenData.getType().name());
                 obj.addProperty("name", notizenData.getName());
 
-                JsonElement segments = context.serialize(notizenData.getSegments(),new TypeToken<List<SegmentData>>() {}.getType());
-                obj.add("segments", segments);
+                JsonElement fontSegments = context.serialize(notizenData.getSegments(),new TypeToken<List<FontSegmentData>>() {}.getType());
+                obj.add("fontSegment", fontSegments);
                 return obj;
 
             case Task:
                 TaskData taskData = (TaskData) src;
                 obj.addProperty("type", taskData.getType().name());
                 obj.addProperty("name", taskData.getName());
+
+                JsonElement taskSegments = context.serialize(taskData.getTaskSegments(),new TypeToken<List<TaskSegmentData>>() {}.getType());
+                obj.add("taskSegment", taskSegments);
                 
                 return obj;
             default:

@@ -30,8 +30,6 @@ public class TaskSegment {
 
         this.titel = "";
         this.beschreibung = "";
-
-        showDialog(false);
     }
 
     public JPanel getDisplayPanel() {
