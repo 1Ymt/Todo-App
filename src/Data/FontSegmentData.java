@@ -1,6 +1,6 @@
 package Data;
 
-public class SegmentData {
+public class FontSegmentData {
     private String text;
     private int fontSize;
     private String fontFamily;
@@ -10,10 +10,10 @@ public class SegmentData {
     private boolean isStrikethrough;
 
 
-    public SegmentData() {
+    public FontSegmentData() {
     }
 
-    public SegmentData(String text, int fontSize, String fontFamily, boolean isBold, boolean isItalic, boolean isUnderline, boolean isStrikethrough) {
+    public FontSegmentData(String text, int fontSize, String fontFamily, boolean isBold, boolean isItalic, boolean isUnderline, boolean isStrikethrough) {
         this.text = text;
         this.fontSize = fontSize;
         this.fontFamily = fontFamily;

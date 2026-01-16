@@ -25,7 +25,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 
 import Data.NotizenData;
-import Data.SegmentData;
+import Data.FontSegmentData;
 import Data.TodoData;
 import Enums.TodoType;
 import Interface.TodoListController;
@@ -77,11 +77,11 @@ public class NotizenSteuerung extends TodoItem {
         return data;
     }
     
-    private ArrayList<SegmentData> getSegmentFromStyledDocument() {
+    private ArrayList<FontSegmentData> getSegmentFromStyledDocument() {
         StyledDocument doc = notizenFrame.getStyledDocument();
         Element root = doc.getDefaultRootElement();
                 
-        ArrayList<SegmentData> segments = new ArrayList<>();
+        ArrayList<FontSegmentData> segments = new ArrayList<>();
 
         for (int i = 0; i < root.getElementCount(); i++) {
             Element elem = root.getElement(i);
@@ -103,7 +103,7 @@ public class NotizenSteuerung extends TodoItem {
                     String fontFamily = StyleConstants.getFontFamily(attrs);
                     int fontSize = StyleConstants.getFontSize(attrs);
 
-                    SegmentData segment = new SegmentData(text, fontSize, fontFamily, bold, italic, underline, isStrikeThrough);
+                    FontSegmentData segment = new FontSegmentData(text, fontSize, fontFamily, bold, italic, underline, isStrikeThrough);
 
                     segments.add(segment);
 
@@ -266,12 +266,12 @@ public class NotizenSteuerung extends TodoItem {
         // }
     }
     
-    public void setSegmentDataToStyledDocument(ArrayList<SegmentData> segments) {
+    public void setFontSegmentDataToStyledDocument(ArrayList<FontSegmentData> segments) {
         StyledDocument doc = notizenFrame.getStyledDocument();
         try {
             doc.remove(0, doc.getLength());
 
-            for (SegmentData segment : segments) {
+            for (FontSegmentData segment : segments) {
                 SimpleAttributeSet attrs = new SimpleAttributeSet();
 
                 StyleConstants.setBold(attrs, segment.isBold());
