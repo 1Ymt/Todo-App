@@ -6,41 +6,6 @@ import Enums.UIColor;
 import Steuerung.Steuerung;
 import UI.AppFrame;
 
-/*
- * ---WICHTIG---
- * Eine TodoData Klasse erstellen, um Informationen für den Json File zu speichern.
- * Mache auch so, dass man genau sieht, ob eine Ordner oder eine Task anfängt, mache das am besten mit einem Array so dass es so im Json aussieht
- * 
- * {
- *  Ordner "NAME": [
- *      "name": "Hallo",
-        "type": "Ordner",
-        "number": "1",
-        "colorRGB": -16777216,
-        "todoItem": []
-        }
- *  ]
- * }
- * 
- * So it die TodoData Klasse:
- * 
- * public class TodoData {
-        String name;
-        String type;
-        String number;
-        int colorRGB;
-        List<TodoData> todoItem;
-
-        public TodoData(String name, String type, String number, int colorRGB) {
-            this.name = name;
-            this.type = type;
-            this.number = number;
-            this.colorRGB = colorRGB;
-            this.todoItem = new ArrayList<>();
-        }
-    }
- */
-
 public class TaskFrame extends TodoFrame {
 
     private Steuerung steuerung;
@@ -198,7 +163,7 @@ public class TaskFrame extends TodoFrame {
         buttonPanel.setPreferredSize(new Dimension(appFrame.getSize().width, 45));
 
         JButton todoItemButton = new JButton("+");
-        todoItemButton.addActionListener(e -> taskSteuerung.createNewTaskSegment());
+        todoItemButton.addActionListener(e -> taskSteuerung.openNewTaskSegment());
         todoItemButton.setBackground(steuerung.getUiColor(UIColor.primary));
         todoItemButton.setForeground(steuerung.getUiColor(UIColor.highlight));
         todoItemButton.setFont(new Font("ARIAL_BOLD", Font.BOLD, 25));
