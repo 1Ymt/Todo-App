@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import Data.NotizenData;
 import Data.OrdnerData;
 import Data.SegmentData;
+import Data.TaskData;
 import Data.TodoData;
 
 public class TodoDataSerializer implements JsonSerializer<TodoData>{
@@ -40,7 +41,11 @@ public class TodoDataSerializer implements JsonSerializer<TodoData>{
                 return obj;
 
             case Task:
-                throw new UnsupportedOperationException("Unimplemented method 'Task'");
+                TaskData taskData = (TaskData) src;
+                obj.addProperty("type", taskData.getType().name());
+                obj.addProperty("name", taskData.getName());
+                
+                return obj;
             default:
                 throw new IllegalArgumentException("No TodoType " + src.getType());
         }

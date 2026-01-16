@@ -14,13 +14,16 @@ import com.google.gson.GsonBuilder;
 
 import Data.NotizenData;
 import Data.OrdnerData;
+import Data.TaskData;
 import Data.TodoData;
 import Enums.TodoType;
 import Interface.TodoListController;
 import Steuerung.FolderManager;
 import Steuerung.Steuerung;
+import Testing.Task;
 import TodoItem.NotizenSteuerung;
 import TodoItem.OrdnerSteuerung;
+import TodoItem.TaskSteuerung;
 import UI.AppFrame;
 
 public class FileManager {
@@ -64,14 +67,14 @@ public class FileManager {
             TodoItemDeserializer deserializer = new TodoItemDeserializer();
             deserializer.registerDataType(TodoType.Notizen, NotizenData.class);
             deserializer.registerDataType(TodoType.Ordner, OrdnerData.class);
+            deserializer.registerDataType(TodoType.Task, TaskData.class);
 
             Gson gson = new GsonBuilder().registerTypeAdapter(TodoData.class, deserializer).create();
-            //Gson gson = new Gson();
 
             OrdnerData data = gson.fromJson(reader, OrdnerData.class);
             List<TodoData> datas = data.getTodoData();
             mainMenu = new OrdnerSteuerung(steuerung, appFrame, data.getName(), null, new Color(data.getColorRGB()));
-            folderManager.addMainMenu(mainMenu.getMenuPanel());
+            folderManager.addMainMenu("mainMenu", mainMenu.getMenuPanel());
 
             loadFile(datas, mainMenu);
 
@@ -98,14 +101,23 @@ public class FileManager {
                     notizen.setSegmentDataToStyledDocument(notizenData.getSegments());
                     break;
                 case Task:
+                    TaskData taskData = (TaskData) datas.get(i);
+                    TaskSteuerung task = new TaskSteuerung(steuerung, appFrame, taskData.getName(), parent);
+                    parent.addTodoItem(task);
                     break;
                 default:
                     throw new IllegalArgumentException("No TodoType " + dataType);
             }
         }
     }
+
     private void createMainMenuPanel() {
         mainMenu = new OrdnerSteuerung(steuerung, appFrame, "Main Menu", null, Color.BLACK);
-        folderManager.addMainMenu(mainMenu.getMenuPanel());
+        folderManager.addMainMenu("mainMenu", mainMenu.getMenuPanel());
+    }
+
+    public void reloadFile() {
+        folderManager.removeMainMenu();
+        openSaveFile();
     }
 }
