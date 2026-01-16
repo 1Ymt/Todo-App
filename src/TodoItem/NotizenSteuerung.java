@@ -308,10 +308,11 @@ public class NotizenSteuerung extends TodoItem {
 
     @Override
     protected MouseListener mouseClicked() {
+        NotizenSteuerung notizenSteuerung = this;
         MouseListener ml = new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if(e.getButton() == MouseEvent.BUTTON1) {
-                    steuerung.nextMenuPanel(notizenFrame.menuPanel());
+                    steuerung.nextMenuPanel(notizenSteuerung.getName(), notizenFrame.menuPanel());
                 }else if(e.getButton() == MouseEvent.BUTTON3) {
                 
                 }
