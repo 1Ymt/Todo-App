@@ -13,7 +13,7 @@ public class MenuBar extends JMenuBar{
     MenuBar(Steuerung steuerung, AppFrame appFrame) {
         this.steuerung = steuerung;
 
-        this.setBackground(steuerung.getUiColor(UIColor.bgLight));
+        //this.setBackground(steuerung.getUiColor(UIColor.bgLight));
         this.add(saving());
         this.add(config());
     }

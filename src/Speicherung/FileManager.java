@@ -23,7 +23,6 @@ import Steuerung.Steuerung;
 import TodoItem.NotizenSteuerung;
 import TodoItem.OrdnerSteuerung;
 import TodoItem.TaskSteuerung;
-import Data.TaskSegmentData;
 import UI.AppFrame;
 
 public class FileManager {

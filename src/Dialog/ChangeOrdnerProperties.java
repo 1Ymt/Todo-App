@@ -4,7 +4,6 @@ import Steuerung.Steuerung;
 import TodoItem.OrdnerSteuerung;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 import Enums.UIColor;
@@ -204,7 +203,7 @@ public class ChangeOrdnerProperties extends JDialog{
      */
     private void confirmButtonsListener(JButton button) {
         if(button.getName().equals("Bestätigt")) {
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
 
             ordner.setOrdnerFarbe(choosenColor);
             if(ordnerName.getText().isBlank()) {
@@ -214,9 +213,9 @@ public class ChangeOrdnerProperties extends JDialog{
             }
             ordner.getParent().updateMenuList();
 
-        }else if(button.getName().equals("Abbrechen")) {
+        } else if (button.getName().equals("Abbrechen")) {
             //Wenn das Button betätigt wird, dann schließt sich das Fenster
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
         }
     }
 
@@ -224,7 +223,7 @@ public class ChangeOrdnerProperties extends JDialog{
         int option = -1;
         if (ordner.getTodoItems().isEmpty()) {
             option = JOptionPane.showConfirmDialog(this, "Willst du wirklich diesen Ordner löschen?","Confirmation", JOptionPane.YES_NO_OPTION);
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
         } else {
             option = JOptionPane.showConfirmDialog(this,
                     "Es gibt noch Inhalte in diesem Ordner. Wenn du diesen Ordner Löscht,\nwerden alle Inhalte verloren gehen. Trotzdem Löschen?",
@@ -236,7 +235,7 @@ public class ChangeOrdnerProperties extends JDialog{
             parent.getTodoItems().remove(ordner);
             parent.updateMenuList();
             JOptionPane.showMessageDialog(this, "Ordner wurde gelöscht!");
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
         }
     }
 

@@ -2,7 +2,6 @@ package Dialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -187,7 +186,7 @@ public class TodoItemDialog extends JDialog{
             JOptionPane.showMessageDialog(this, "Bitte eine Task auswählen");
 
             }else{
-                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                this.dispose();
 
                 TodoType types = TodoType.valueOf(taskAuswahl);
 
@@ -211,7 +210,7 @@ public class TodoItemDialog extends JDialog{
 
         }else if(button.getName().equals("Abbrechen")) {
             //Wenn das Button betätigt wird, dann schließt sich das Fenster
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
         }
     }
 }

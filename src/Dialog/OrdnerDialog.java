@@ -7,7 +7,6 @@ import Enums.UIColor;
 import Interface.TodoListController;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
 
 import Steuerung.Steuerung;
 
@@ -182,7 +181,7 @@ public class OrdnerDialog extends JDialog{
 
         }else if(button.getName().equals("Abbrechen")) {
             //Wenn das Button betätigt wird, dann schließt sich das Fenster
-            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            this.dispose();
         }
     }
 

@@ -122,7 +122,6 @@ public class ConfigSteuerung {
             steuerung.firstMenuPanel();
         } else {
             colorData = oldColorData;
-            printAllColors(colorData);
             steuerung.previousMenuPanel();
         }
     }

@@ -1,11 +1,9 @@
 package Steuerung;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 
 import Config.ColorData;
-import Config.ConfigFrame;
 import Config.ConfigSteuerung;
 import Dialog.*;
 import Enums.UIColor;
@@ -109,7 +107,7 @@ public class Steuerung {
             }
         }
 
-        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+        dialog.dispose();
         OrdnerSteuerung ordnerSteuerung = new OrdnerSteuerung(this, appFrame, name, todoListClass, ordnerFarbe);
         todoListClass.addTodoItem(ordnerSteuerung);
     }
@@ -134,7 +132,7 @@ public class Steuerung {
             }
         }
 
-        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+        dialog.dispose();
         NotizenSteuerung notizenSteuerung = new NotizenSteuerung(this, appFrame, name, todoListClass);
         todoListClass.addTodoItem(notizenSteuerung);
     }
@@ -159,7 +157,7 @@ public class Steuerung {
             }
         }
         
-        dialog.dispatchEvent(new WindowEvent(dialog, WindowEvent.WINDOW_CLOSING));
+        dialog.dispose();
         
         TaskSteuerung taskSteuerung = new TaskSteuerung(this, appFrame, name, todoListClass);
         todoListClass.addTodoItem(taskSteuerung);

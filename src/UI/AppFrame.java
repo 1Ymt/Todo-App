@@ -13,16 +13,15 @@ public class AppFrame extends JFrame{
 
         this.setTitle("Todo App");
         this.setSize(1000, 600);
-        this.setBackground(Color.BLACK);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(500,100));
+        this.setMinimumSize(new Dimension(500, 100));
         this.setResizable(true);
 
         MenuBar menuBar = new MenuBar(steuerung, this);
         this.setJMenuBar(menuBar);
         this.add(folderManager);
-        
+
         this.setVisible(true);
     }
 }
